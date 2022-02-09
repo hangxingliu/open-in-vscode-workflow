@@ -1,0 +1,52 @@
+name: ci
+
+on:
+  - push
+  - pull_request
+  - workflow_dispatch
+
+jobs:
+
+  check-repo:
+    runs-on: ubuntu-latest
+    name: 'Check is this action in particular repo'
+    if: ${{ github.event.repository.name == 'open-in-vscode-workflow' }}
+    steps:
+      - name: 'Print action info'
+        run: echo "event=${{ github.event_name }} event_ref=${{ github.event.ref }} repo=${{ github.event.repository.full_name }}"
+
+  is-push-to-main:
+    runs-on: ubuntu-latest
+    name: 'Is triggered by push to main?'
+    needs: check-repo
+    if: ${{
+      (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main') &&
+      ((github.event_name == 'push') || github.event_name == 'workflow_dispatch') }}
+    steps:
+      - name: 'Current action is triggered by push to main'
+        run: 'true'
+
+  build:
+    runs-on: ubuntu-latest
+    needs: check-repo
+    strategy:
+      matrix:
+        node:
+          - '16'
+          # - 'lts/*'
+    name: Continuous integration (Node.js ${{ matrix.node }})
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node }}
+      - name: 'Print latest 5 git logs'
+        run: git log --branches --all --decorate --oneline -n 5
+      - run: yarn install
+      - run: yarn run build
+      - run: ./scripts/distribute-workflow-files.sh
+      - uses: actions/upload-artifact@v2
+        with:
+          name: workflow-files
+          path: dist/*.alfredworkflow
+          if-no-files-found: error

@@ -1,0 +1,54 @@
+name: new-version
+
+on:
+  push:
+    tags:
+      - v*
+  workflow_dispatch:
+
+jobs:
+
+  check-repo:
+    runs-on: ubuntu-latest
+    name: 'Check is this action in particular repo'
+    if: ${{ github.event.repository.name == 'open-in-vscode-workflow' }}
+    steps:
+      - name: 'Print action info'
+        run: echo "event=${{ github.event_name }} event_ref=${{ github.event.ref }} repo=${{ github.event.repository.full_name }}"
+
+  build-all-workflow-files:
+    name: Build all workflow files
+    needs: check-repo
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "16"
+      - run: yarn install
+      - run: yarn run build
+      - run: ./scripts/download-nodejs-bin.sh
+      - run: ./scripts/distribute-workflow-files.sh --all
+      - uses: actions/upload-artifact@v2
+        with:
+          name: workflow-files
+          path: dist/*.alfredworkflow
+          if-no-files-found: error
+
+  npm-publish:
+    name: Publish npm package
+    needs: build-all-workflow-files
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "16"
+      - name: 'Print latest 5 git logs'
+        run: git log --branches --all --decorate --oneline -n 5
+      - name: 'Install and Build'
+        run: npm install && npm run build
+      - uses: JS-DevTools/npm-publish@v1
+        with:
+          access: "public"
+          token: ${{ secrets.NPM_TOKEN }}

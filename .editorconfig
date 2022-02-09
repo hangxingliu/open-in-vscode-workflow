@@ -14,3 +14,7 @@ trim_trailing_whitespace = false
 [info.plist]
 indent_size = 4
 indent_style = tab
+
+[*.{yaml,yml}]
+indent_size = 2
+indent_style = space
