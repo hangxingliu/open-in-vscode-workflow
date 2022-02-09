@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "declaration": false,
+    "removeComments": false,
+    "target": "ES2019",
+    "sourceMap": true,
+    "outDir": "./workflow/js",
+    "skipLibCheck": true
+  },
+  "exclude": [
+    "workflow",
+    "node_modules"
+  ]
+}
