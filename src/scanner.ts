@@ -1,12 +1,13 @@
 import * as fs from 'fs';
 import * as os from 'os';
 import * as path from 'path';
-import { ScannerOptions, ScannerResult, ScannerState } from './types';
-import { readText, stat, isDir, readDir } from './utils';
+import { ScannerOptions, ScannerResult, ScannerState, WorkspaceStorageResult } from './types';
+import { readText, stat, isDir, readDir, resolvePath, exists } from './utils';
 
 export const workspaceStorageDirs = {
   code: '~/Library/Application Support/Code/User/workspaceStorage',
 };
+const maxWorkspaceJsonFileSize = 512 * 1024;
 
 const defaultCacheFileName = 'open-in-vscode-workflow-cachev2.json';
 const defaultCacheMaxAge = 2 * 60 * 1000;
@@ -133,12 +134,43 @@ export class AttachDirScanner {
 }
 
 export class WorkspaceStorageScanner {
-
-  constructor(private readonly dir: string) { }
-
-  async scan() {
-    // WIP
+  private readonly dir: string
+  constructor(dir: string) {
+    this.dir = resolvePath(dir);
   }
 
+  async scan() {
+    const workspaces = await readDir(this.dir);
+    const promises = workspaces.map(async (dir) => {
+      if (!dir.isDirectory()) return;
+
+      const jsonFile = path.resolve(this.dir, dir.name, 'workspace.json');
+      const st = await stat(jsonFile);
+      if (!st || !st.isFile()) return;
+      if (st.size > maxWorkspaceJsonFileSize) return;
+
+      try {
+        const json = await readText(jsonFile);
+        const storage = JSON.parse(json);
+        return this.parseWorkspaceFolder(storage?.folder);
+      } catch (error) {
+      }
+    });
+    let result = await Promise.all(promises);
+    result = result.filter(it => it);
+    return result;
+  }
+
+  parseWorkspaceFolder = async (uri: string): Promise<WorkspaceStorageResult> => {
+    if (!uri || typeof uri !== 'string') return;
+    const parsed = new URL(uri);
+    switch (parsed.protocol) {
+      case 'file:':
+        if (!exists(parsed.pathname)) return;
+        return { uri, fsPath: parsed.pathname };
+      default:
+        return { uri };
+    }
+  }
 
 }

@@ -32,3 +32,9 @@ export type ScannerResult = {
   path: string;
   projectPath?: string;
 };
+
+export type WorkspaceStorageResult = {
+  uri: string;
+  fsPath?: string;
+  projectPath?: string;
+};

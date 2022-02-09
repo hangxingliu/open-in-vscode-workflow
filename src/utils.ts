@@ -2,6 +2,14 @@ import * as os from 'os';
 import * as fs from 'fs';
 import * as path from 'path';
 
+export function exists(filePath: string): boolean {
+  try {
+    return fs.existsSync(filePath);
+  } catch (error) {
+    return false;
+  }
+}
+
 export function stat(filePath: string): Promise<fs.Stats> {
   return new Promise((resolve) => {
     fs.stat(filePath, (error, stat) => resolve(error ? null : stat));
