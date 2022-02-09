@@ -1,6 +1,6 @@
 .vscode/settings.json
 
-workflow/**/*.map
+workflow/js/*
 libs
 dist
 

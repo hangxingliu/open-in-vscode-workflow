@@ -29,7 +29,7 @@
 	<key>disabled</key>
 	<false/>
 	<key>name</key>
-	<string>Open project in Visual Studio Code</string>
+	<string>Open in Visual Studio Code</string>
 	<key>objects</key>
 	<array>
 		<dict>

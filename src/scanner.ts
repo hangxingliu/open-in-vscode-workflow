@@ -4,6 +4,10 @@ import * as path from 'path';
 import { ScannerOptions, ScannerResult, ScannerState } from './types';
 import { readText, stat, isDir, readDir } from './utils';
 
+export const workspaceStorageDirs = {
+  code: '~/Library/Application Support/Code/User/workspaceStorage',
+};
+
 const defaultCacheFileName = 'open-in-vscode-workflow-cachev2.json';
 const defaultCacheMaxAge = 2 * 60 * 1000;
 
@@ -126,4 +130,15 @@ export class AttachDirScanner {
     });
     return items;
   }
+}
+
+export class WorkspaceStorageScanner {
+
+  constructor(private readonly dir: string) { }
+
+  async scan() {
+    // WIP
+  }
+
+
 }
