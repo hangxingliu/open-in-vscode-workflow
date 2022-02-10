@@ -17,8 +17,15 @@ add_path() {
 add_path "/usr/local/bin";
 add_path "/opt/homebrew/bin";
 
+
 next_opts=();
 if [ -n "$1" ]; then
+  workflow_config_file="${HOME}/.open-in-vscode.json"
+  if [ "$1" == "$workflow_config_file" ] && [ ! -f "$workflow_config_file" ]; then
+    cp default.open-in-vscode.json "$workflow_config_file" &&
+      echo "Created '$workflow_config_file' from default config" >&2;
+  fi
+
   next_opts+=("${@}");
 else
   next_opts+=("--new-window");

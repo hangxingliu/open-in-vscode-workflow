@@ -61,7 +61,7 @@ export type AlfredItem = {
   subtitle: string;
   arg: string[];
   uid?: string;
-  icon?: { type: 'fileicon' | 'filetype'; path: string };
+  icon?: { type?: 'fileicon' | 'filetype'; path: string };
   valid?: boolean;
   match?: string;
   autocomplete?: string;

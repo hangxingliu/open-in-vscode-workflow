@@ -1,5 +1,7 @@
 import * as path from 'path';
+import { userConfigFile } from './config';
 import { AlfredItem, ScannerResult, WorkspaceStorageResult } from './types';
+import { resolvePath } from './utils';
 
 /** 0-100, 101 for abs path, 102 for new windows */
 export const maxScore = 102;
@@ -104,11 +106,22 @@ export class AlfredResult {
   addNewWindowItem() {
     this.addItem(
       {
-        title: '+ New Window',
+        title: '+ New window',
         subtitle: 'Open a new Visual Studio Code window',
         arg: ['--new-window'],
       },
-      102
+      maxScore
+    );
+  }
+  addConfigItem() {
+    this.addItem(
+      {
+        title: 'Edit configuration for scanning projects',
+        subtitle: userConfigFile,
+        arg: [resolvePath(userConfigFile)],
+        icon: { path: 'config.png' },
+      },
+      maxScore
     );
   }
 

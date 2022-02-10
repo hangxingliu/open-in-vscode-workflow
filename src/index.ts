@@ -13,8 +13,9 @@ if (require.main === module) main();
 export async function main() {
   const rawQuery = String(process.argv[2] || '').trim();
   const result = new AlfredResult();
-  if (rawQuery.length < 2 && rawQuery != '/') {
+  if (rawQuery.length < 2 && rawQuery !== '/') {
     result.addNewWindowItem();
+    result.addConfigItem();
     return console.log(JSON.stringify({ items: result.getItems() }, null, 2));
   }
 
@@ -28,6 +29,9 @@ export async function main() {
     profiler.tick('load config');
     console.error(config.dump());
   }
+
+  if (query.rawLC === 'cfg' || query.rawLC === 'conf' || query.rawLC === 'config')
+    result.addConfigItem();
 
   const allPrefixes = config.customPrefixes;
   const prefix = Object.keys(allPrefixes)

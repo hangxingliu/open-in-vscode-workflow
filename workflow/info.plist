@@ -165,6 +165,10 @@
 	<dict>
 		<key>cache_enabled</key>
 		<string>1</string>
+		<key>scan_code_workspace</key>
+		<string>1</string>
+		<key>scan_directories</key>
+		<string>1</string>
 	</dict>
 	<key>version</key>
 	<string>1.0.0</string>

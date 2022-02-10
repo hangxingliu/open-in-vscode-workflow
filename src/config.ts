@@ -2,12 +2,12 @@ import * as path from 'path';
 import { ScannerOptions, UserConfig } from './types';
 import { isObject, parseRegExp, readText, resolvePath, stat } from './utils';
 
-const userConfigFile = '~/.open-in-vscode.json';
+export const userConfigFile = '~/.open-in-vscode.json';
 
-const defaultUserConfig: UserConfig = {
+export const defaultUserConfig: UserConfig = {
   baseDirs: ['~/Documents'],
   attachDirs: [],
-  maxDepth: 2,
+  maxDepth: 3,
   pruningName: ['/^[._]/', 'node_modules', 'cache', 'dist', 'logs'],
   projectFiles: [
     '.git',

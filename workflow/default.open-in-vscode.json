@@ -1,0 +1,29 @@
+{
+	"baseDirs": [
+		"~/Documents"
+	],
+	"attachDirs": [],
+	"maxDepth": 3,
+	"pruningName": [
+		"/^[._]/",
+		"node_modules",
+		"cache",
+		"dist",
+		"logs"
+	],
+	"projectFiles": [
+		".git",
+		".svn",
+		".hg",
+		".vscode",
+		".idea",
+		"package.json",
+		"Makefile",
+		"README.md"
+	],
+	"customPrefixes": {
+		"/": "/",
+		"~/": "~/",
+		"docs/": "~/Documents/"
+	}
+}
