@@ -26,7 +26,7 @@ export class Config {
       await this._resolve();
     } catch (error) {
       if (this.configFile)
-        console.error(`Load config file "${this.configFile}" failed: ${error.message}`);
+        console.error(`error: load config file "${this.configFile}" failed: ${error.message}`);
       else console.error(error.message);
     }
   };
@@ -53,7 +53,7 @@ export class Config {
       if (Array.isArray(config2.ignore)) config.ignore = config2.ignore;
       if (Array.isArray(config2.stopSignFile)) config.stopSignFile = config2.stopSignFile;
       if (config2.maxDepth > 0) config.maxDepth = config2.maxDepth;
-      console.error(`loaded user config: '${this.configFile}'`);
+      console.error(`info: loaded user config: '${this.configFile}'`);
     }
 
     const prefixes = Object.keys(config.customPrefixes);
@@ -86,4 +86,19 @@ export class Config {
     }
     return p;
   };
+
+  dump = () => {
+    const { baseDirs, attachDirs, stopSignFileRegex, ignoreRegex, maxDepth } = this.scannerOptions;
+    const result: string[] = [
+      `scannerOptions = {`,
+      `  baseDirs: ${JSON.stringify(baseDirs)}`,
+      `  attachDirs: ${JSON.stringify(attachDirs)}`,
+      `  stopSignFileRegex: ${JSON.stringify(stopSignFileRegex.map(it=>it.toString()))}`,
+      `  ignoreRegex: ${JSON.stringify(ignoreRegex.map(it=>it.toString()))}`,
+      `  maxDepth: ${JSON.stringify(maxDepth)}`,
+      `}`,
+      `customPrefixes = ${JSON.stringify(this.customPrefixes)}`
+    ];
+    return result.join('\n');
+  }
 }
