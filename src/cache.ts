@@ -1,7 +1,8 @@
 import * as os from 'os';
 import * as path from 'path';
-import { ScannerResult, SerializedItem, WorkspaceStorageResult } from './types';
+import { mkdirSync, existsSync } from 'fs';
 import { stat, readText, writeText } from './utils';
+import { AlfredItem, ScannerResult, SerializedItem, WorkspaceStorageResult } from './types';
 
 type CacheDescpritor<T> = {
   name: string;
@@ -11,9 +12,26 @@ type CacheDescpritor<T> = {
   fromCache: (item: SerializedItem<T>) => T;
 };
 
-const tmpdir = os.tmpdir();
+let tmpdir = os.tmpdir();
 const cachePrefix = 'openinvscode-cachev';
 const cacheEnabled = /^(?:0|no?|f(?:alse)?)$/i.test(process.env.cache_enabled) === false;
+
+// use alfred cache dir
+if (process.env.alfred_workflow_cache) {
+  const tmpdirAlfred = process.env.alfred_workflow_cache;
+  if (path.isAbsolute(tmpdirAlfred)) {
+    if (existsSync(tmpdirAlfred)) {
+      tmpdir = tmpdirAlfred;
+    } else {
+      try {
+        mkdirSync(tmpdirAlfred);
+        tmpdir = tmpdirAlfred;
+      } catch (error) {
+        // noop
+      }
+    }
+  }
+}
 
 export class CacheManager<T> {
   constructor(readonly descriptor: CacheDescpritor<T>) {}
