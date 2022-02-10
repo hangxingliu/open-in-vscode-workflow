@@ -19,7 +19,7 @@ add_path "/opt/homebrew/bin";
 
 next_opts=();
 if [ -n "$1" ]; then
-  next_opts+=("$1");
+  next_opts+=("${@}");
 else
   next_opts+=("--new-window");
 fi

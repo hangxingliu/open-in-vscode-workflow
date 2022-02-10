@@ -31,5 +31,9 @@ fi
 # still can't find Node.js binary file
 [ -x "$node" ] || throw "can't find Node.js binary file";
 
-"$node" js/index.js "${@}";
+if [ "$alfred_debug" == 1 ]; then
+  "$node" --enable-source-maps js/index.js "${@}";
+else
+  "$node" js/index.js "${@}";
+fi
 

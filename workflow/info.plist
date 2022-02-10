@@ -124,8 +124,11 @@
 			<integer>55</integer>
 		</dict>
 	</dict>
-	<key>variablesdontexport</key>
-	<array/>
+	<key>variables</key>
+	<dict>
+		<key>cache_enabled</key>
+		<string>1</string>
+	</dict>
 	<key>version</key>
 	<string>1.0.0</string>
 	<key>webaddress</key>
