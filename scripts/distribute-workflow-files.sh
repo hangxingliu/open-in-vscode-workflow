@@ -20,7 +20,12 @@ has_param() {
 }
 
 echo "[.] cleaning files";
-find . -type f \( -name '._*' -o -iname '.DS_Store' -o -iname '*.js.map' \) -delete || exit 1;
+find . -type f \( \
+  -name '._*' -o \
+  -iname '.DS_Store' -o \
+  -iname '*.test.js' -o \
+  -iname '*.js.map' \
+\) -delete || exit 1;
 
 if has_param "--all"; then
 

@@ -3,6 +3,8 @@
 throw() { echo -e "fatal: $1" >&2; exit 1; }
 pushd "$( dirname "${BASH_SOURCE[0]}" )/.." || exit 1;
 
+./node_modules/.bin/tsc || exit 1;
+
 FROM_DIR="./workflow";
 ALFRED4_WORKFLOWS_DIR="$HOME/Library/Application Support/Alfred/Alfred.alfredpreferences/workflows"
 
