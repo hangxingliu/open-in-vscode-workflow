@@ -1,6 +1,6 @@
 import * as os from 'os';
 import * as path from 'path';
-import { SerializedItem, WorkspaceStorageResult } from './types';
+import { ScannerResult, SerializedItem, WorkspaceStorageResult } from './types';
 import { stat, readText, writeText } from './utils';
 
 type CacheDescpritor<T> = {
@@ -59,9 +59,9 @@ export class CacheManager<T> {
   };
 }
 
-const copy = <T>(it: T) => it;
+const copy = <T>(it: T) => it as any;
 
-export const scanDirCache = new CacheManager<any>({
+export const scanDirCache = new CacheManager<ScannerResult>({
   name: 'dir',
   version: 1,
   maxAge: 10 * 1000,
@@ -73,7 +73,7 @@ export const wsStorageCache = new CacheManager<WorkspaceStorageResult>({
   version: 1,
   maxAge: 15 * 1000,
   fromCache: (cache) => {
-    return Object.assign(cache, { url: new URL(cache.uri as any) }) as any;
+    return Object.assign(cache, { uri: new URL(cache.uri as any) }) as any;
   },
   toCache: (it) => {
     return Object.assign({}, it, { uri: it.uri.toString() });

@@ -8,11 +8,21 @@ const defaultUserConfig: UserConfig = {
   baseDirs: ['~/Documents'],
   attachDirs: [],
   maxDepth: 2,
-  ignore: ['/^[._]/i', 'archived'],
-  stopSignFile: ['package.json', 'node_modules'],
+  pruningName: ['/^[._]/', 'node_modules', 'cache', 'dist', 'logs'],
+  projectFiles: [
+    '.git',
+    '.svn',
+    '.hg',
+    '.vscode',
+    '.idea',
+    'package.json',
+    'Makefile',
+    'README.md',
+  ],
   customPrefixes: {
+    '/': '/',
+    '~/': '~/',
     'docs/': '~/Documents/',
-    'downloads/': '~/Downloads/',
   },
 };
 
@@ -33,25 +43,17 @@ export class Config {
 
   private _resolve = async () => {
     const config = Object.assign({}, defaultUserConfig);
-    config.customPrefixes = Object.assign(
-      {
-        '/': '/',
-        '~/': '~/',
-      },
-      config.customPrefixes
-    );
-
     this.configFile = resolvePath(userConfigFile);
     const st = await stat(this.configFile);
     if (st && st.isFile()) {
       const json = await readText(this.configFile);
       const config2: UserConfig = JSON.parse(json) || {};
 
-      if (isObject(config2.customPrefixes)) Object.assign(config, config2.customPrefixes);
+      if (isObject(config2.customPrefixes)) Object.assign(config.customPrefixes, config2.customPrefixes);
       if (Array.isArray(config2.baseDirs)) config.baseDirs = config2.baseDirs;
       if (Array.isArray(config2.attachDirs)) config.attachDirs = config2.attachDirs;
-      if (Array.isArray(config2.ignore)) config.ignore = config2.ignore;
-      if (Array.isArray(config2.stopSignFile)) config.stopSignFile = config2.stopSignFile;
+      if (Array.isArray(config2.pruningName)) config.pruningName = config2.pruningName;
+      if (Array.isArray(config2.projectFiles)) config.projectFiles = config2.projectFiles;
       if (config2.maxDepth > 0) config.maxDepth = config2.maxDepth;
       console.error(`info: loaded user config: '${this.configFile}'`);
     }
@@ -70,8 +72,8 @@ export class Config {
     this.scannerOptions = {
       baseDirs: config.baseDirs.map((it) => resolvePath(it)),
       attachDirs: config.attachDirs.map((it) => resolvePath(it)),
-      ignoreRegex: config.ignore.map((it) => parseRegExp(it)),
-      stopSignFileRegex: config.stopSignFile.map((it) => parseRegExp(it)),
+      pruningNameRegex: config.pruningName.map((it) => parseRegExp(it)),
+      projectFilesRegex: config.projectFiles.map((it) => parseRegExp(it)),
       maxDepth: config.maxDepth,
     };
     this.customPrefixes = config.customPrefixes;
@@ -88,17 +90,18 @@ export class Config {
   };
 
   dump = () => {
-    const { baseDirs, attachDirs, stopSignFileRegex, ignoreRegex, maxDepth } = this.scannerOptions;
+    const { baseDirs, attachDirs, pruningNameRegex, projectFilesRegex, maxDepth } =
+      this.scannerOptions;
     const result: string[] = [
       `scannerOptions = {`,
       `  baseDirs: ${JSON.stringify(baseDirs)}`,
       `  attachDirs: ${JSON.stringify(attachDirs)}`,
-      `  stopSignFileRegex: ${JSON.stringify(stopSignFileRegex.map(it=>it.toString()))}`,
-      `  ignoreRegex: ${JSON.stringify(ignoreRegex.map(it=>it.toString()))}`,
+      `  pruningNameRegex: ${JSON.stringify(pruningNameRegex.map((it) => it.toString()))}`,
+      `  projectFilesRegex: ${JSON.stringify(projectFilesRegex.map((it) => it.toString()))}`,
       `  maxDepth: ${JSON.stringify(maxDepth)}`,
       `}`,
-      `customPrefixes = ${JSON.stringify(this.customPrefixes)}`
+      `customPrefixes = ${JSON.stringify(this.customPrefixes)}`,
     ];
     return result.join('\n');
-  }
+  };
 }
