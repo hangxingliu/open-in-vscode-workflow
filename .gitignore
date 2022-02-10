@@ -4,6 +4,10 @@ workflow/js/*
 libs
 dist
 
+*.tgz
+*.zip
+*.alfredworkflow
+
 node_modules
 
 # ##############

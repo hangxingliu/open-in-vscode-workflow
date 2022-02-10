@@ -1,0 +1,10 @@
+.github
+.vscode
+dist
+libs
+node_modules
+res
+scripts
+src
+tsconfig.json
+yarn.lock
