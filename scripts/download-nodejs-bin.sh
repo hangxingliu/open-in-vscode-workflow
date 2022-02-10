@@ -23,6 +23,8 @@ tar xf node-darwin-x64.tar.gz || exit 1;
 
 cp ./node-v*-darwin-arm64/bin/node node_arm64 || exit 1;
 cp ./node-v*-darwin-x64/bin/node node_x64 || exit 1;
+cp ./node-v*-darwin-arm64/LICENSE LICENSE || exit 1;
+cp ./node-v*-darwin-arm64/README.md README.md || exit 1;
 
 rm -r ./node-v*-darwin-arm64 || exit 1;
 rm -r ./node-v*-darwin-x64 || exit 1;
