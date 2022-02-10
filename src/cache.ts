@@ -1,7 +1,7 @@
 import * as os from 'os';
 import * as path from 'path';
 import { mkdirSync, existsSync } from 'fs';
-import { stat, readText, writeText } from './utils';
+import { stat, readText, writeText, readBoolFromEnvironment } from './utils';
 import { AlfredItem, ScannerResult, SerializedItem, WorkspaceStorageResult } from './types';
 
 type CacheDescpritor<T> = {
@@ -14,7 +14,7 @@ type CacheDescpritor<T> = {
 
 let tmpdir = os.tmpdir();
 const cachePrefix = 'openinvscode-cachev';
-const cacheEnabled = /^(?:0|no?|f(?:alse)?)$/i.test(process.env.cache_enabled) === false;
+const cacheEnabled = readBoolFromEnvironment('cache_enabled', true);
 
 // use alfred cache dir
 if (process.env.alfred_workflow_cache) {

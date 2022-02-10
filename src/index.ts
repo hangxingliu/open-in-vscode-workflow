@@ -7,7 +7,7 @@ import { Config } from './config';
 import { fuzzyMatch } from './fuzzy-match';
 import { AbsPathScanner, Scanner, workspaceStorageDirs, WorkspaceStorageScanner } from './scanner';
 import { WorkspaceRemoteType, workspaceRemoteTypeMap } from './types';
-import { URLSet } from './utils';
+import { readBoolFromEnvironment, URLSet } from './utils';
 
 if (require.main === module) main();
 export async function main() {
@@ -15,7 +15,7 @@ export async function main() {
   const result = new AlfredResult();
   if (rawQuery.length < 2 && rawQuery != '/') {
     result.addNewWindowItem();
-    return console.log(result.toString());
+    return console.log(JSON.stringify({ items: result.getItems() }, null, 2));
   }
 
   const profiler = createProfiler();
@@ -48,11 +48,11 @@ export async function main() {
   profiler.tick();
   const urlSet = new URLSet();
   const scanner = new Scanner(urlSet, config.scannerOptions);
-  await scanner.scan();
+  if (readBoolFromEnvironment('scan_directories', true)) await scanner.scan();
   if (isDebug) profiler.tick('scan directories');
 
   const wsScanner = new WorkspaceStorageScanner(urlSet, workspaceStorageDirs.code);
-  await wsScanner.scan();
+  if (readBoolFromEnvironment('scan_code_workspace', true)) await wsScanner.scan();
   if (isDebug) profiler.tick('scan workspace storage');
 
   const { fragmentsLC } = query.getFragments();

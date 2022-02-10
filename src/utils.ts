@@ -19,6 +19,12 @@ export function urlFromFsPath(fsPath: string) {
   return new URL(`file://${fsPath}`);
 }
 
+export function readBoolFromEnvironment(envName: string, defaultValue: boolean) {
+  if (defaultValue)
+    return /^(?:0|no?|f(?:alse)?|off)$/i.test(process.env[envName]) === false;
+  return /^(?:1|y(es)?|t(?:ure)?|on)$/i.test(process.env[envName]);
+}
+
 export function exists(filePath: string): boolean {
   try {
     return fs.existsSync(filePath);

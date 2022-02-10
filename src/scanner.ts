@@ -146,10 +146,7 @@ export class AbsPathScanner {
 
 export class WorkspaceStorageScanner {
   private readonly dir: string;
-
   result: WorkspaceStorageResult[] = [];
-  /** key is lowercase remote name, value is raw remote name */
-  readonly remoteNames = new Map<string, string>();
 
   constructor(private readonly urlSet: URLSet, dir: string) {
     this.dir = resolvePath(dir);
@@ -179,11 +176,7 @@ export class WorkspaceStorageScanner {
       } catch (error) {}
     });
     let result = await Promise.all(promises);
-    result = result.filter((it) => {
-      if (!it) return false;
-      if (it.remoteName) this.remoteNames.set(it.remoteName.toLowerCase(), it.remoteName);
-      return true;
-    });
+    result = result.filter(it => it);
     this.result = result;
     wsStorageCache.saveCache(this.result);
 
