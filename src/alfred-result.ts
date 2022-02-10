@@ -21,7 +21,7 @@ export class AlfredResult {
     this.count++;
   };
 
-  add(item: ScannerResult, score = 50) {
+  addScanResult(item: ScannerResult, score = 50) {
     this.addItem(
       {
         title: item.shortName,
@@ -112,7 +112,7 @@ export class AlfredResult {
     );
   }
 
-  toString() {
+  getItems() {
     const items = [];
     let len = 0;
     for (let i = maxScore; i >= 0; i--) {
@@ -121,8 +121,6 @@ export class AlfredResult {
       len += subItems.length;
       if (len > this.maxItems) break;
     }
-
-    if (process.env.alfred_debug === '1') return JSON.stringify({ items }, null, 2);
-    return JSON.stringify({ items });
+    return items;
   }
 }

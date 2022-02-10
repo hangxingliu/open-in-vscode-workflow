@@ -97,3 +97,11 @@ export const wsStorageCache = new CacheManager<WorkspaceStorageResult>({
     return Object.assign({}, it, { uri: it.uri.toString() });
   },
 });
+
+export const resultCache = new CacheManager<AlfredItem>({
+  name: 'result',
+  version: 1,
+  maxAge: 60 * 1000,
+  fromCache: copy,
+  toCache: copy,
+});

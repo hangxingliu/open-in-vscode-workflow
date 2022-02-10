@@ -2,7 +2,9 @@
 
 import { AlfredQuery } from './alfred-query';
 import { AlfredResult } from './alfred-result';
+import { resultCache } from './cache';
 import { Config } from './config';
+import { fuzzyMatch } from './fuzzy-match';
 import { AbsPathScanner, Scanner, workspaceStorageDirs, WorkspaceStorageScanner } from './scanner';
 import { WorkspaceRemoteType, workspaceRemoteTypeMap } from './types';
 import { URLSet } from './utils';
@@ -99,13 +101,35 @@ export async function main() {
       50
     );
     if (score > 0) {
-      result.add(item, score);
+      result.addScanResult(item, score);
       if (result.count >= result.maxItems * 2) break;
     }
   }
   if (isDebug) profiler.tick(`match from ${scanner.result.length} directories`);
 
-  console.log(result.toString());
+  let items = result.getItems();
+  if (items.length > 0) {
+    resultCache.saveCache(items);
+  } else {
+    const prevItems = await resultCache.loadCache();
+    console.error(`info: fuzzy matching "${query.rawLC}" from ${prevItems.length} prevItems`);
+    items = prevItems
+      .map((it) => {
+        const score = fuzzyMatch(it.title.toLowerCase(), query.rawLC);
+        if (score <= 0) return;
+        return Object.assign(it, { score });
+      })
+      .filter((it) => it)
+      .sort((a, b) => b.score - a.score)
+      .map((it) => {
+        if (isDebug) console.error(`debug: fuzzy matched "${it.title}" with score ${it.score}`);
+        delete it.score;
+        return it;
+      });
+  }
+
+  if (isDebug) console.log(JSON.stringify({ items }, null, 2));
+  else console.log(JSON.stringify({ items }));
 }
 
 function createProfiler() {
