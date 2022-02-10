@@ -8,6 +8,19 @@
 	<string>Productivity</string>
 	<key>connections</key>
 	<dict>
+		<key>0F3BE3C6-71FB-4B75-AE97-2CFADAAA883A</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>13430A14-AADC-42EC-986C-9F8DD6A4B626</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
 		<key>8DAF3DF3-7B04-4679-AD1D-156D2CC288C1</key>
 		<array>
 			<dict>
@@ -104,11 +117,35 @@
 			<key>version</key>
 			<integer>3</integer>
 		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>acceptsmulti</key>
+				<integer>0</integer>
+				<key>filetypes</key>
+				<array/>
+				<key>name</key>
+				<string>Open in Visual Studio Code</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.trigger.action</string>
+			<key>uid</key>
+			<string>0F3BE3C6-71FB-4B75-AE97-2CFADAAA883A</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
 	</array>
 	<key>readme</key>
 	<string></string>
 	<key>uidata</key>
 	<dict>
+		<key>0F3BE3C6-71FB-4B75-AE97-2CFADAAA883A</key>
+		<dict>
+			<key>xpos</key>
+			<integer>245</integer>
+			<key>ypos</key>
+			<integer>200</integer>
+		</dict>
 		<key>13430A14-AADC-42EC-986C-9F8DD6A4B626</key>
 		<dict>
 			<key>xpos</key>
