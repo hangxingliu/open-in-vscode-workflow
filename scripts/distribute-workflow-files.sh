@@ -11,6 +11,8 @@ echo "version=${version}";
 pushd ./workflow || exit 1;
 mkdir -p ../dist || exit 1;
 
+cp ../LICENSE . || exit 1;
+
 # https://stackoverflow.com/questions/2875424/correct-way-to-check-for-a-command-line-flag-in-bash
 has_param() {
   local term="$1";
@@ -55,4 +57,5 @@ test -f "$target_file" && rm "$target_file";
 zip -r "$target_file" . || exit 1;
 
 ls -al ../dist
+rm ./LICENSE;
 echo "[+] done!";

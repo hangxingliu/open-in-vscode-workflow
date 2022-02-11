@@ -136,7 +136,50 @@
 		</dict>
 	</array>
 	<key>readme</key>
-	<string></string>
+	<string>This workflow provides searching your projects and opening them in Visual Studio Code through the keyword `code` in the search box of your Alfred.
+
+And it also adds a File Action `Open in Visual Studio Code` in your Alfred.
+
+You can create a configuration file named `.open-in-vscode.json` in your home directory.
+
+Or you can create or edit it by keyword **code config** in Alfred. (this command creates config from example if there is not config file in your home directory)
+
+Here is an example config:
+
+``` json
+{
+  "baseDirs": [
+    "~/Documents",
+    "~/Projects"
+  ],
+  "attachDirs": [
+    "/Volumes/External HDD/ExampleProject"
+  ],
+  "maxDepth": 3,
+  "pruningName": [
+    "/^[._]/",
+    "node_modules",
+    "cache",
+    "dist",
+    "logs"
+  ],
+  "projectFiles": [
+    ".git",
+    ".svn",
+    ".hg",
+    ".vscode",
+    ".idea",
+    "package.json",
+    "Makefile",
+    "README.md"
+  ],
+  "customPrefixes": {
+    "/": "/",
+    "~/": "~/",
+    "docs/": "~/Documents/"
+  }
+}
+```</string>
 	<key>uidata</key>
 	<dict>
 		<key>0F3BE3C6-71FB-4B75-AE97-2CFADAAA883A</key>
@@ -170,6 +213,8 @@
 		<key>scan_directories</key>
 		<string>1</string>
 	</dict>
+	<key>variablesdontexport</key>
+	<array/>
 	<key>version</key>
 	<string>1.0.0</string>
 	<key>webaddress</key>
