@@ -12,6 +12,10 @@ Or you can download and install [Node.js](https://nodejs.org/en/download/) befor
 | Mac with **Intel chip**                              | **OpenInVSCode.amd64.alfredworkflow**  | This workflow ships Node.js v16.14.0 binary file for x64   |
 | Mac with **Apple chip** (M1)                         | **OpenInVSCode.arm64.alfredworkflow**  | This workflow ships Node.js v16.14.0 binary file for arm64 |
 
+## 1.1.0 - 2022-03-05
+
+- 03c92ce: improve experience for querying remote projects
+- a33ba39: fix bug that occurs when querying absolute path prefix
 
 ## 1.0.0 - 2022-02-11
 
