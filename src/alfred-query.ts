@@ -1,3 +1,10 @@
+type MatchRemoteQueryResult = {
+  remoteLC: string;
+  queryLC: string;
+  fragmentsLC: string[];
+  exact?: boolean;
+};
+
 export class AlfredQuery {
   static fragmentRegex = /[\s_-]+/;
   readonly rawLC: string;
@@ -17,8 +24,8 @@ export class AlfredQuery {
     return { fragments, fragmentsLC };
   }
 
-  matchRemoteQuery() {
-    const mtx = this.raw.match(/^([\w-]+)\s*[\+\>]+\s*(.+)$/);
+  matchRemoteQuery(remoteNamesMap: Map<string, string>): MatchRemoteQueryResult {
+    let mtx = this.raw.match(/^([\w-]+)\s*[\+\>]+\s*(.+)$/);
     if (mtx) {
       const queryLC = mtx[2].toLowerCase();
       return {
@@ -26,6 +33,19 @@ export class AlfredQuery {
         queryLC,
         fragmentsLC: queryLC.split(AlfredQuery.fragmentRegex),
       };
+    }
+    mtx = this.raw.match(/^([\w-]+)(?:\s+(.+))?$/);
+    if (mtx) {
+      const remoteLC = mtx[1].toLowerCase();
+      if (remoteNamesMap.has(remoteLC)) {
+        const queryLC = (mtx[2] || '').toLowerCase();
+        return {
+          exact: true,
+          remoteLC,
+          queryLC,
+          fragmentsLC: queryLC.split(AlfredQuery.fragmentRegex),
+        };
+      }
     }
   }
 

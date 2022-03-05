@@ -38,7 +38,7 @@ export async function main() {
     .sort((a, b) => b.length - a.length)
     .find((it) => rawQuery.startsWith(it));
 
-  // if the user is querying with the prefix of absolute path
+  // check if the user is querying with the prefix of absolute path
   if (prefix) {
     const matchedPath = allPrefixes[prefix];
     const pathPrefix = matchedPath + rawQuery.slice(prefix.length);
@@ -60,20 +60,43 @@ export async function main() {
   if (isDebug) profiler.tick('scan workspace storage');
 
   const { fragmentsLC } = query.getFragments();
-  const matchRemote = query.matchRemoteQuery();
+
+  // check if the user is querying project on remote
+  const matchRemote = query.matchRemoteQuery(wsScanner.remoteNamesMap);
   let matchRemoteType: WorkspaceRemoteType;
   if (matchRemote) {
     matchRemoteType = workspaceRemoteTypeMap.get(matchRemote.remoteLC);
     if (isDebug) console.error(`debug: user is querying remote (${JSON.stringify(matchRemote)})`);
+
+    if (matchRemote.exact) {
+      const { remoteLC, queryLC, fragmentsLC } = matchRemote;
+      const listAll = queryLC.trim().length === 0;
+      for (let i = 0; i < wsScanner.result.length; i++) {
+        const item = wsScanner.result[i];
+        if (!item.remoteName) continue;
+        if (item.remoteName.toLowerCase() !== remoteLC) continue;
+        let score = 70;
+        if (!listAll)
+          score = AlfredQuery.getScore(
+            { nameLC: item.shortName.toLowerCase() },
+            { rawLC: queryLC, fragmentsLC },
+            70
+          );
+        if (score <= 0) continue;
+        result.addWorkspaceResult(item, score);
+      }
+    }
   }
 
-  for (let i = 0; i < wsScanner.result.length; i++) {
+  let i2 = wsScanner.result.length;
+  if (matchRemote?.exact) i2 = 0;
+  for (let i = 0; i < i2; i++) {
     const item = wsScanner.result[i];
     let score = 0;
     if (matchRemote) {
       const { remoteLC, queryLC, fragmentsLC } = matchRemote;
       if (
-        item.remoteName === remoteLC ||
+        item.remoteName?.toLowerCase() === remoteLC ||
         (matchRemoteType && matchRemoteType === item.remoteType)
       ) {
         score = AlfredQuery.getScore(
@@ -97,7 +120,9 @@ export async function main() {
   }
   if (isDebug) profiler.tick(`match from ${wsScanner.result.length} workspace items`);
 
-  for (let i = 0; i < scanner.result.length; i++) {
+  i2 = scanner.result.length;
+  if (matchRemote?.exact) i2 = 0;
+  for (let i = 0; i < i2; i++) {
     const item = scanner.result[i];
     const score = AlfredQuery.getScore(
       { nameLC: item.shortName.toLowerCase() },
@@ -116,20 +141,22 @@ export async function main() {
     resultCache.saveCache(items);
   } else {
     const prevItems = await resultCache.loadCache();
-    console.error(`info: fuzzy matching "${query.rawLC}" from ${prevItems.length} prevItems`);
-    items = prevItems
-      .map((it) => {
-        const score = fuzzyMatch(it.title.toLowerCase(), query.rawLC);
-        if (score <= 0) return;
-        return Object.assign(it, { score });
-      })
-      .filter((it) => it)
-      .sort((a, b) => b.score - a.score)
-      .map((it) => {
-        if (isDebug) console.error(`debug: fuzzy matched "${it.title}" with score ${it.score}`);
-        delete it.score;
-        return it;
-      });
+    if (prevItems) {
+      console.error(`info: fuzzy matching "${query.rawLC}" from ${prevItems.length} prevItems`);
+      items = prevItems
+        .map((it) => {
+          const score = fuzzyMatch(it.title.toLowerCase(), query.rawLC);
+          if (score <= 0) return;
+          return Object.assign(it, { score });
+        })
+        .filter((it) => it)
+        .sort((a, b) => b.score - a.score)
+        .map((it) => {
+          if (isDebug) console.error(`debug: fuzzy matched "${it.title}" with score ${it.score}`);
+          delete it.score;
+          return it;
+        });
+    }
   }
   return outputResult(items);
 

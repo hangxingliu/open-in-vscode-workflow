@@ -148,6 +148,14 @@ export class WorkspaceStorageScanner {
   private readonly dir: string;
   result: WorkspaceStorageResult[] = [];
 
+  /** remoteNameLC => remiteName */
+  remoteNamesMap = new Map<string, string>();
+  saveRemoteNames = () => {
+    this.result.forEach((it) => {
+      if (it.remoteName) this.remoteNamesMap.set(it.remoteName.toLowerCase(), it.remoteName);
+    });
+  };
+
   constructor(private readonly urlSet: URLSet, dir: string) {
     this.dir = resolvePath(dir);
   }
@@ -157,6 +165,7 @@ export class WorkspaceStorageScanner {
     if (cache) {
       this.result = cache;
       cache.forEach((it) => this.urlSet.add(it.uri.toString()));
+      this.saveRemoteNames();
       return;
     }
 
@@ -176,8 +185,9 @@ export class WorkspaceStorageScanner {
       } catch (error) {}
     });
     let result = await Promise.all(promises);
-    result = result.filter(it => it);
+    result = result.filter((it) => it);
     this.result = result;
+    this.saveRemoteNames();
     wsStorageCache.saveCache(this.result);
 
     return result;
