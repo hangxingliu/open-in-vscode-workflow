@@ -16,7 +16,7 @@ export async function main() {
   if (rawQuery.length < 2 && rawQuery !== '/') {
     result.addNewWindowItem();
     result.addConfigItem();
-    return console.log(JSON.stringify({ items: result.getItems() }, null, 2));
+    return outputResult(result.getItems());
   }
 
   const profiler = createProfiler();
@@ -38,6 +38,7 @@ export async function main() {
     .sort((a, b) => b.length - a.length)
     .find((it) => rawQuery.startsWith(it));
 
+  // if the user is querying with the prefix of absolute path
   if (prefix) {
     const matchedPath = allPrefixes[prefix];
     const pathPrefix = matchedPath + rawQuery.slice(prefix.length);
@@ -45,8 +46,7 @@ export async function main() {
     items.forEach((it) =>
       result.addAbsolutePath(it.isDir, it.basename, it.fullPath, prefix, matchedPath)
     );
-    console.log(result.toString());
-    return;
+    return outputResult(result.getItems());
   }
 
   profiler.tick();
@@ -131,9 +131,12 @@ export async function main() {
         return it;
       });
   }
+  return outputResult(items);
 
-  if (isDebug) console.log(JSON.stringify({ items }, null, 2));
-  else console.log(JSON.stringify({ items }));
+  function outputResult(items: unknown[]) {
+    if (isDebug) console.log(JSON.stringify({ items }, null, 2));
+    else console.log(JSON.stringify({ items }));
+  }
 }
 
 function createProfiler() {
