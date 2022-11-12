@@ -1,4 +1,4 @@
-# Open in Visual Studio Code Workflow for [Alfred 4](https://www.alfredapp.com/)
+# Open in Visual Studio Code Workflow for [Alfred 4/5](https://www.alfredapp.com/)
 
 This workflow provides 
 searching your projects and opening them in Visual Studio Code through the keyword `code` in the search box of your Alfred.
