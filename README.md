@@ -32,6 +32,9 @@ All boolean variables accept values `0`, `false`, `no` and `off` as falsy values
 - `cache_enabled`: set it to falsy value to disable cache (`1` by default)
 - `scan_code_workspace`: set it to falsy value to disable scanning the projects that opened in Visual Studio Code (`1` by default)
 - `scan_directories`: set it to falsy value to disable scanning the directories on the disk for projects (`1` by default)
+- `prepend_path`: DOCS...
+- `vscode_command`: TODO
+- `vscode_app_name`: TODO
 
 ### Configuration File for Scanning
 

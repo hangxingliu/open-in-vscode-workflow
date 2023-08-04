@@ -14,9 +14,13 @@ add_path() {
   fi
 }
 
-add_path "/usr/local/bin";
-add_path "/opt/homebrew/bin";
-
+if test -n "$prepend_path"; then
+  export PATH="${prepend_path}:${PATH}";
+else
+  add_path "/usr/local/bin";
+  add_path "/opt/homebrew/bin";
+  add_path "$HOME/.cargo/bin";
+fi
 
 next_opts=();
 if [ -n "$1" ]; then
