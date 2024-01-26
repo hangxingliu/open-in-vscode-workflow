@@ -11,6 +11,8 @@ import { readBoolFromEnvironment, URLSet } from './utils';
 
 if (require.main === module) main();
 export async function main() {
+  const isDebug = process.env.alfred_debug === '1';
+
   const rawQuery = String(process.argv[2] || '').trim();
   const result = new AlfredResult();
   if (rawQuery.length < 2 && rawQuery !== '/') {
@@ -20,7 +22,6 @@ export async function main() {
   }
 
   const profiler = createProfiler();
-  const isDebug = process.env.alfred_debug === '1';
 
   const query = new AlfredQuery(rawQuery);
   const config = new Config();
