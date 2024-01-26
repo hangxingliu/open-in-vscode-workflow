@@ -204,9 +204,10 @@ export class WorkspaceStorageScanner {
     // vscode-remote://ssh-remote%2Bvm1/path/to/dir
     // vscode-vfs://github/hangxingliu/repo
     // vscode-remote://codespaces%2Bhangxingliu-org-repo-xxxxxxxxxxxx/workspaces/repo
-    const baseName = path.basename(uri.pathname);
+    const pathName = decodeURI(uri.pathname);
+    const baseName = path.basename(pathName);
     if (uri.protocol === 'file:') {
-      if (!exists(uri.pathname)) return;
+      if (!exists(pathName)) return;
       return { uri, baseName, shortName: baseName };
     }
 

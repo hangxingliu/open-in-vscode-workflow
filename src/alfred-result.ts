@@ -40,7 +40,7 @@ export class AlfredResult {
   addWorkspaceResult(item: WorkspaceStorageResult, score = 50) {
     const { uri, shortName, baseName } = item;
     if (uri.protocol === 'file:') {
-      const fullPath = uri.pathname;
+      const fullPath = decodeURI(uri.pathname);
       this.addItem(
         {
           title: shortName,
