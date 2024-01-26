@@ -21,15 +21,15 @@ jobs:
     needs: check-repo
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: "16"
       - run: yarn install
       - run: yarn run build
       - run: ./scripts/download-nodejs-bin.sh
       - run: ./scripts/distribute-workflow-files.sh --all
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v4
         with:
           name: workflow-files
           path: dist/*.alfredworkflow
@@ -40,15 +40,16 @@ jobs:
     needs: build-all-workflow-files
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: "16"
+          registry-url: https://registry.npmjs.org/
       - name: 'Print latest 5 git logs'
         run: git log --branches --all --decorate --oneline -n 5
       - name: 'Install and Build'
         run: npm install && npm run build
-      - uses: JS-DevTools/npm-publish@v1
-        with:
-          access: "public"
-          token: ${{ secrets.NPM_TOKEN }}
+      - name: Publish package to NPM
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
