@@ -10,7 +10,12 @@ Or you can download and install [Node.js](https://nodejs.org/en/download/) befor
 |--------------------------------------------------|------------------------------------|----------|
 | **Already installed Node.js** (Node.js 10 or later)  | **OpenInVSCode.alfredworkflow**        |          |
 | Mac with **Intel chip**                              | **OpenInVSCode.amd64.alfredworkflow**  | This workflow ships Node.js v16.14.0 binary file for x64   |
-| Mac with **Apple chip** (M1)                         | **OpenInVSCode.arm64.alfredworkflow**  | This workflow ships Node.js v16.14.0 binary file for arm64 |
+| Mac with **Apple chip** (M1/M2/M3)                   | **OpenInVSCode.arm64.alfredworkflow**  | This workflow ships Node.js v16.14.0 binary file for arm64 |
+
+## 1.2.0 - 2024-01-26
+
+* 359ce78: fix for initial results
+* 00c3e16: fix parsing VSCode workspace URL
 
 ## 1.1.0 - 2022-03-05
 
