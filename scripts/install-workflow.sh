@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 
 throw() { echo -e "fatal: $1" >&2; exit 1; }
+execute() { echo "$ $*"; "$@" || throw "failed to execute '$1'"; }
 pushd "$( dirname "${BASH_SOURCE[0]}" )/.." || exit 1;
+
+command -v rsync >/dev/null || throw "rsync is not installed!";
 
 ./node_modules/.bin/tsc || exit 1;
 
@@ -10,6 +13,11 @@ FROM_DIR="./workflow";
 ALFRED_BASE_DIR="${HOME}/Library/Application Support/Alfred";
 ALFRED_WORKFLOWS_DIR="${ALFRED_BASE_DIR}/Alfred.alfredpreferences/workflows";
 ALFRED_PREFS_JSON="${ALFRED_BASE_DIR}/prefs.json";
+
+RSYNC_OPTS=(
+  -a --xattrs --progress  --delete --iconv=utf-8
+	--exclude='._*' --exclude='.DS_Store' --exclude='prefs.plist'
+);
 
 function get_current_workflows_dir() {
   env ALFRED_PREFS_JSON="$ALFRED_PREFS_JSON" node -e '
@@ -30,9 +38,6 @@ fi
 [ -d "$FROM_DIR" ] || throw "'$FROM_DIR' is not a directory!";
 
 TARGET_DIR="${ALFRED_WORKFLOWS_DIR}/vscode"
-if test -d "$TARGET_DIR"; then
-  rm -r "$TARGET_DIR" || exit 1;
-fi
-cp -rv "$FROM_DIR" "$TARGET_DIR" || throw "copy failed!";
+execute rsync "${RSYNC_OPTS[@]}" "${FROM_DIR}/" "${TARGET_DIR}";
 
 echo "[+] done!";
