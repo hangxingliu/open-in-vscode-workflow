@@ -29,17 +29,12 @@ jobs:
   build:
     runs-on: ubuntu-latest
     needs: check-repo
-    strategy:
-      matrix:
-        node:
-          - '16'
-          # - 'lts/*'
-    name: Continuous integration (Node.js ${{ matrix.node }})
+    name: Continuous integration (Node.js "lts/*")
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node }}
+          node-version: "lts/*"
       - name: 'Print latest 5 git logs'
         run: git log --branches --all --decorate --oneline -n 5
       - run: yarn install

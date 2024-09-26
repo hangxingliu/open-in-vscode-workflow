@@ -10,6 +10,11 @@ dist
 
 node_modules
 
+# Yarn
+/.yarnrc*
+/.yarn
+/.pnp.*
+
 # ##############
 # https://github.com/github/gitignore/blob/master/Global/Linux.gitignore
 # ##############
