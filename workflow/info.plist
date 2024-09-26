@@ -185,36 +185,203 @@ Here is an example config:
 		<key>0F3BE3C6-71FB-4B75-AE97-2CFADAAA883A</key>
 		<dict>
 			<key>xpos</key>
-			<integer>245</integer>
+			<real>245</real>
 			<key>ypos</key>
-			<integer>200</integer>
+			<real>200</real>
 		</dict>
 		<key>13430A14-AADC-42EC-986C-9F8DD6A4B626</key>
 		<dict>
 			<key>xpos</key>
-			<integer>450</integer>
+			<real>450</real>
 			<key>ypos</key>
-			<integer>55</integer>
+			<real>55</real>
 		</dict>
 		<key>8DAF3DF3-7B04-4679-AD1D-156D2CC288C1</key>
 		<dict>
 			<key>xpos</key>
-			<integer>245</integer>
+			<real>245</real>
 			<key>ypos</key>
-			<integer>55</integer>
+			<real>55</real>
 		</dict>
 	</dict>
-	<key>variables</key>
-	<dict>
-		<key>cache_enabled</key>
-		<string>1</string>
-		<key>scan_code_workspace</key>
-		<string>1</string>
-		<key>scan_directories</key>
-		<string>1</string>
-	</dict>
-	<key>variablesdontexport</key>
-	<array/>
+	<key>userconfigurationconfig</key>
+	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string>code</string>
+				<key>placeholder</key>
+				<string></string>
+				<key>required</key>
+				<true/>
+				<key>trim</key>
+				<true/>
+			</dict>
+			<key>description</key>
+			<string></string>
+			<key>label</key>
+			<string>Keyword</string>
+			<key>type</key>
+			<string>textfield</string>
+			<key>variable</key>
+			<string>keyword</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string>code</string>
+				<key>pairs</key>
+				<array>
+					<array>
+						<string>Visual Studio Code</string>
+						<string>code</string>
+					</array>
+					<array>
+						<string>Visual Studio Code Insiders</string>
+						<string>code_insiders</string>
+					</array>
+					<array>
+						<string>VSCodium</string>
+						<string>codium</string>
+					</array>
+				</array>
+			</dict>
+			<key>description</key>
+			<string></string>
+			<key>label</key>
+			<string>Code Variety</string>
+			<key>type</key>
+			<string>popupbutton</string>
+			<key>variable</key>
+			<string>vscode_variety</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<true/>
+				<key>required</key>
+				<false/>
+				<key>text</key>
+				<string></string>
+			</dict>
+			<key>description</key>
+			<string></string>
+			<key>label</key>
+			<string>Scan Workspaces</string>
+			<key>type</key>
+			<string>checkbox</string>
+			<key>variable</key>
+			<string>scan_code_workspace</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<true/>
+				<key>required</key>
+				<false/>
+				<key>text</key>
+				<string></string>
+			</dict>
+			<key>description</key>
+			<string></string>
+			<key>label</key>
+			<string>Scan Directories</string>
+			<key>type</key>
+			<string>checkbox</string>
+			<key>variable</key>
+			<string>scan_directories</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>defaultvalue</key>
+				<integer>3</integer>
+				<key>markercount</key>
+				<integer>5</integer>
+				<key>maxvalue</key>
+				<integer>99</integer>
+				<key>minvalue</key>
+				<integer>1</integer>
+				<key>onlystoponmarkers</key>
+				<false/>
+				<key>showmarkers</key>
+				<true/>
+			</dict>
+			<key>description</key>
+			<string></string>
+			<key>label</key>
+			<string>Scan Max Depth</string>
+			<key>type</key>
+			<string>slider</string>
+			<key>variable</key>
+			<string>scan_max_depth</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string>~/Projects</string>
+				<key>filtermode</key>
+				<integer>1</integer>
+				<key>placeholder</key>
+				<string></string>
+				<key>required</key>
+				<false/>
+			</dict>
+			<key>description</key>
+			<string></string>
+			<key>label</key>
+			<string>Projects Directory</string>
+			<key>type</key>
+			<string>filepicker</string>
+			<key>variable</key>
+			<string>scan_directory_root</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<true/>
+				<key>required</key>
+				<false/>
+				<key>text</key>
+				<string></string>
+			</dict>
+			<key>description</key>
+			<string>Uncheck it to disable cache for scanning projects. (This is enabled by default)</string>
+			<key>label</key>
+			<string>Cache Enabled</string>
+			<key>type</key>
+			<string>checkbox</string>
+			<key>variable</key>
+			<string>cache_enabled</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string>/usr/local/bin:/opt/homebrew/bin:~/.cargo/bin</string>
+				<key>required</key>
+				<false/>
+				<key>trim</key>
+				<true/>
+				<key>verticalsize</key>
+				<integer>6</integer>
+			</dict>
+			<key>description</key>
+			<string></string>
+			<key>label</key>
+			<string>Prepend PATH</string>
+			<key>type</key>
+			<string>textarea</string>
+			<key>variable</key>
+			<string>prepend_path</string>
+		</dict>
+	</array>
 	<key>version</key>
 	<string>1.2.0</string>
 	<key>webaddress</key>
