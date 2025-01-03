@@ -7,13 +7,14 @@
   "scripts": {
     "build": "tsc",
     "clean": "rimraf dist workflow/js",
+    "setup-ide": "yarn dlx @yarnpkg/sdks vscode",
     "distribute": "./scripts/distribute-workflow-files.sh"
   },
   "devDependencies": {
-    "@types/node": "^22.7.2",
+    "@types/node": "^22.10.4",
     "rimraf": "^6.0.1",
     "ts-node": "^10.9.2",
-    "typescript": "^5.6.2"
+    "typescript": "^5.7.2"
   },
-  "packageManager": "yarn@4.5.0"
+  "packageManager": "yarn@4.6.0"
 }

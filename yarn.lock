@@ -80,12 +80,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^22.7.2":
-  version: 22.7.2
-  resolution: "@types/node@npm:22.7.2"
+"@types/node@npm:^22.10.4":
+  version: 22.10.4
+  resolution: "@types/node@npm:22.10.4"
   dependencies:
-    undici-types: "npm:~6.19.2"
-  checksum: 10c0/987e4df034e4af0ce76b938c2c0d94373da376b228f1c93081a661c77e682795c599bcad47c93c70a25b8ea443587137cf23088fb7f62ef442955f13046eae3d
+    undici-types: "npm:~6.20.0"
+  checksum: 10c0/b2950f71dad821ef5103f42f3b4a804f8613f5799b8d96f427f904f49841b424e311fa38b3a92cf4710529abc82a355093b9258b030af3e94ee9b84bd1313063
   languageName: node
   linkType: hard
 
@@ -303,10 +303,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "open-in-vscode-workflow@workspace:."
   dependencies:
-    "@types/node": "npm:^22.7.2"
+    "@types/node": "npm:^22.10.4"
     rimraf: "npm:^6.0.1"
     ts-node: "npm:^10.9.2"
-    typescript: "npm:^5.6.2"
+    typescript: "npm:^5.7.2"
   languageName: unknown
   linkType: soft
 
@@ -447,30 +447,30 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^5.6.2":
-  version: 5.6.2
-  resolution: "typescript@npm:5.6.2"
+"typescript@npm:^5.7.2":
+  version: 5.7.2
+  resolution: "typescript@npm:5.7.2"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 10c0/3ed8297a8c7c56b7fec282532503d1ac795239d06e7c4966b42d4330c6cf433a170b53bcf93a130a7f14ccc5235de5560df4f1045eb7f3550b46ebed16d3c5e5
+  checksum: 10c0/a873118b5201b2ef332127ef5c63fb9d9c155e6fdbe211cbd9d8e65877283797cca76546bad742eea36ed7efbe3424a30376818f79c7318512064e8625d61622
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A^5.6.2#optional!builtin<compat/typescript>":
-  version: 5.6.2
-  resolution: "typescript@patch:typescript@npm%3A5.6.2#optional!builtin<compat/typescript>::version=5.6.2&hash=8c6c40"
+"typescript@patch:typescript@npm%3A^5.7.2#optional!builtin<compat/typescript>":
+  version: 5.7.2
+  resolution: "typescript@patch:typescript@npm%3A5.7.2#optional!builtin<compat/typescript>::version=5.7.2&hash=5786d5"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 10c0/94eb47e130d3edd964b76da85975601dcb3604b0c848a36f63ac448d0104e93819d94c8bdf6b07c00120f2ce9c05256b8b6092d23cf5cf1c6fa911159e4d572f
+  checksum: 10c0/f3b8082c9d1d1629a215245c9087df56cb784f9fb6f27b5d55577a20e68afe2a889c040aacff6d27e35be165ecf9dca66e694c42eb9a50b3b2c451b36b5675cb
   languageName: node
   linkType: hard
 
-"undici-types@npm:~6.19.2":
-  version: 6.19.8
-  resolution: "undici-types@npm:6.19.8"
-  checksum: 10c0/078afa5990fba110f6824823ace86073b4638f1d5112ee26e790155f481f2a868cc3e0615505b6f4282bdf74a3d8caad715fd809e870c2bb0704e3ea6082f344
+"undici-types@npm:~6.20.0":
+  version: 6.20.0
+  resolution: "undici-types@npm:6.20.0"
+  checksum: 10c0/68e659a98898d6a836a9a59e6adf14a5d799707f5ea629433e025ac90d239f75e408e2e5ff086afc3cace26f8b26ee52155293564593fbb4a2f666af57fc59bf
   languageName: node
   linkType: hard
 

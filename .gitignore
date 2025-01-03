@@ -1,9 +1,10 @@
-.vscode/settings.json
+.vscode/*.json
 
 workflow/js/*
 libs
 dist
 
+*.log
 *.tgz
 *.zip
 *.alfredworkflow
@@ -11,9 +12,13 @@ dist
 node_modules
 
 # Yarn
-/.yarnrc*
-/.yarn
-/.pnp.*
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
 
 # ##############
 # https://github.com/github/gitignore/blob/master/Global/Linux.gitignore
