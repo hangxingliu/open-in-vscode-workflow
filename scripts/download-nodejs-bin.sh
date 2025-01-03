@@ -1,32 +1,45 @@
 #!/usr/bin/env bash
+NODEJS_VERSION=v22.12.0
 
-pushd "$( dirname "${BASH_SOURCE[0]}" )/.." || exit 1;
+throw() { printf "${RED}fatal: %s${RESET}\n" "$1" >&2; exit 1; }
+print_cmd() { printf "${CYAN}\$ %s${RESET}\n" "$*"; }
+execute() { print_cmd "$@"; "$@" || throw "Failed to execute '$1'"; }
 fetch() {
-  test -f "$1" && return 0;
-  curl -fL -o "$1" "$2" || exit 1;
+  local download_url="$1" file_name="$1";
+  file_name="${file_name%%'#'*}";
+  file_name="${file_name%%'?'*}";
+  file_name="${file_name##*'/'}";
+
+  test -f "$file_name" && return 0;
+  execute curl -fLo "$file_name" "$download_url";
 }
+RED="\x1b[31m";
+CYAN="\x1b[36m";
+RESET="\x1b[0m";
 
-set -x;
-mkdir -p libs || exit 1;
-cd libs || exit 1;
+# change the current directory to the project directory
+pushd "$( dirname -- "${BASH_SOURCE[0]}" )/.." >/dev/null || exit 1;
 
-fetch 'node-darwin-arm64.tar.gz' 'https://nodejs.org/dist/v16.14.0/node-v16.14.0-darwin-arm64.tar.gz';
-fetch 'node-darwin-x64.tar.gz' 'https://nodejs.org/dist/v16.14.0/node-v16.14.0-darwin-x64.tar.gz';
+execute mkdir -p libs;
+execute cd libs;
 
-echo '
-56e547d22bc7be8aa40c8cfd604c156a5bcf8692f643ec1801c1fa2390498542  node-darwin-arm64.tar.gz
-26702ab17903ad1ea4e13133bd423c1176db3384b8cf08559d385817c9ca58dc  node-darwin-x64.tar.gz
-' | sha256sum --check - || exit 1;
+fetch "https://nodejs.org/dist/${NODEJS_VERSION}/node-${NODEJS_VERSION}-darwin-arm64.tar.gz";
+fetch "https://nodejs.org/dist/${NODEJS_VERSION}/node-${NODEJS_VERSION}-darwin-x64.tar.gz";
 
-tar xf node-darwin-arm64.tar.gz || exit 1;
-tar xf node-darwin-x64.tar.gz || exit 1;
+echo "
+293dcc6c2408da21562d135b0412525e381bb6fe150d688edb58fe850d0f3e13  node-${NODEJS_VERSION}-darwin-arm64.tar.gz
+52bc25dd026db7247c3c00439afdb83e95087248267f02d6c1a7250d1f896173  node-${NODEJS_VERSION}-darwin-x64.tar.gz
+" | execute sha256sum --check -;
 
-cp ./node-v*-darwin-arm64/bin/node node_arm64 || exit 1;
-cp ./node-v*-darwin-x64/bin/node node_x64 || exit 1;
-cp ./node-v*-darwin-arm64/LICENSE LICENSE || exit 1;
-cp ./node-v*-darwin-arm64/README.md README.md || exit 1;
+execute tar xzf "node-${NODEJS_VERSION}-darwin-arm64.tar.gz";
+execute tar xzf "node-${NODEJS_VERSION}-darwin-x64.tar.gz";
 
-rm -r ./node-v*-darwin-arm64 || exit 1;
-rm -r ./node-v*-darwin-x64 || exit 1;
+execute cp ./node-${NODEJS_VERSION}-darwin-arm64/bin/node node_arm64;
+execute cp ./node-${NODEJS_VERSION}-darwin-x64/bin/node node_x64;
+execute cp ./node-${NODEJS_VERSION}-darwin-arm64/LICENSE LICENSE;
+execute cp ./node-${NODEJS_VERSION}-darwin-arm64/README.md README.md;
+
+execute rm -r ./node-v*-darwin-arm64;
+execute rm -r ./node-v*-darwin-x64;
 
 exit 0;

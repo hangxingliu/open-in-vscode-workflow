@@ -1,12 +1,15 @@
-# Open in Visual Studio Code Workflow for [Alfred 4/5](https://www.alfredapp.com/)
+# Open in Visual Studio Code Workflow for [Alfred 5](https://www.alfredapp.com/)
+
+> [!NOTE]
+> Please check out <https://github.com/hangxingliu/open-in-vscode-workflow/tree/v1.2.0> if you are using Alfred 4.
 
 This workflow provides 
 searching your projects and opening them in Visual Studio Code through the keyword `code` in the search box of your Alfred.
 
 And it also adds a File Action `Open in Visual Studio Code` in your Alfred.
 
-![Screenshot of usage 1](./res/usage1.png)
-![Screenshot of usage 2](./res/usage2.png)
+![Screenshot of usage 1](./workflow/screenshot1.png)
+![Screenshot of usage 2](./workflow/screenshot2.png)
 
 ## Installation
 
