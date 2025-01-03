@@ -17,7 +17,7 @@ cp ../LICENSE . || exit 1;
 has_param() {
   local term="$1";
   shift;
-  for arg; do [ $arg == "$term" ] && return 0; done
+  for arg; do [ "$arg" == "$term" ] && return 0; done
   return 1;
 }
 

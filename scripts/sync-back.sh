@@ -13,6 +13,7 @@ AWK_IF='/com.hangxingliu.open-in-vscode-workflow/{ok=1;} END{if(!ok)exit 1;}';
 RSYNC_OPTS=(
   -a --xattrs --progress  --delete --iconv=utf-8
 	--exclude='._*' --exclude='.DS_Store' --exclude='prefs.plist'
+  --exclude='*.tsbuildinfo'
 );
 
 matched=

@@ -2,11 +2,19 @@
 
 throw() { echo -e "fatal: $1" >&2; exit 1; }
 execute() { echo "$ $*"; "$@" || throw "failed to execute '$1'"; }
-pushd "$( dirname "${BASH_SOURCE[0]}" )/.." || exit 1;
+execute_node_bin() {
+  local bin_name="$1"; shift;
+  if [ -f "node_modules/.bin/${bin_name}" ]; then
+    execute "node_modules/.bin/${bin_name}" "${@}";
+  else
+    execute yarn "${bin_name}" "${@}";
+  fi
+}
 
 command -v rsync >/dev/null || throw "rsync is not installed!";
 
-./node_modules/.bin/tsc || exit 1;
+pushd -- "$( dirname "${BASH_SOURCE[0]}" )/.." || exit 1;
+execute_node_bin tsc;
 
 FROM_DIR="./workflow";
 
@@ -17,6 +25,7 @@ ALFRED_PREFS_JSON="${ALFRED_BASE_DIR}/prefs.json";
 RSYNC_OPTS=(
   -a --xattrs --progress  --delete --iconv=utf-8
 	--exclude='._*' --exclude='.DS_Store' --exclude='prefs.plist'
+  --exclude='*.tsbuildinfo'
 );
 
 function get_current_workflows_dir() {
