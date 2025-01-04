@@ -52,29 +52,3 @@ export type WorkspaceStorageResult = {
   remoteName?: string;
   remoteType?: WorkspaceRemoteType;
 };
-
-/**
- * @see https://www.alfredapp.com/help/workflows/inputs/script-filter/json/
- */
-export type AlfredItem = {
-  title: string;
-  subtitle: string;
-  arg: string[];
-  uid?: string;
-  icon?: { type?: 'fileicon' | 'filetype'; path: string };
-  valid?: boolean;
-  match?: string;
-  autocomplete?: string;
-  type?: 'default' | 'file' | 'file:skipcheck';
-  mods?: {
-    alt?: Partial<AlfredItem>;
-    cmd?: Partial<AlfredItem>;
-  };
-  text?: {
-    /** ⌘C */
-    copy?: string;
-    /** ⌘L */
-    largetype?: string;
-  };
-  quicklookurl?: string;
-};

@@ -1,7 +1,9 @@
 import * as path from 'path';
 import { userConfigFile } from './config';
-import { AlfredItem, ScannerResult, WorkspaceStorageResult } from './types';
+import { AlfredFilter } from "./alfred/types.js";
+import { ScannerResult, WorkspaceStorageResult } from './types.js';
 import { resolvePath } from './utils';
+type AlfredItem = AlfredFilter.Item;
 
 /** 0-100, 101 for abs path, 102 for new windows */
 export const maxScore = 102;

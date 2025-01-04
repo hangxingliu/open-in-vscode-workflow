@@ -2,7 +2,8 @@ import * as os from 'os';
 import * as path from 'path';
 import { mkdirSync, existsSync } from 'fs';
 import { stat, readText, writeText, readBoolFromEnvironment } from './utils';
-import { AlfredItem, ScannerResult, SerializedItem, WorkspaceStorageResult } from './types';
+import { AlfredFilter } from "./alfred/types.js";
+import { ScannerResult, SerializedItem, WorkspaceStorageResult } from './types';
 
 type CacheDescpritor<T> = {
   name: string;
@@ -98,7 +99,7 @@ export const wsStorageCache = new CacheManager<WorkspaceStorageResult>({
   },
 });
 
-export const resultCache = new CacheManager<AlfredItem>({
+export const resultCache = new CacheManager<AlfredFilter.Item>({
   name: 'result',
   version: 1,
   maxAge: 60 * 1000,
