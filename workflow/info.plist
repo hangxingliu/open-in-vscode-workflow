@@ -383,7 +383,7 @@ Here is an example config:
 		</dict>
 	</array>
 	<key>version</key>
-	<string>1.2.0</string>
+	<string>2.0.0</string>
 	<key>webaddress</key>
 	<string>https://github.com/hangxingliu/open-in-vscode-workflow</string>
 </dict>
