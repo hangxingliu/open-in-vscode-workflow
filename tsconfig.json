@@ -6,7 +6,10 @@
     "target": "ES2019",
     "sourceMap": true,
     "outDir": "./workflow/js",
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "strict": true,
+    "incremental": true,
+    "noEmitOnError": false
   },
   "exclude": [
     "workflow",
