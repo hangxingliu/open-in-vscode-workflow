@@ -4,6 +4,7 @@ import { AlfredConfig } from './config.js';
 import type { ScannerResult } from '../scanner/project-directory/types.js';
 import type { ParsedWorkspaceFolderUri } from '../scanner/vscode-workspace/types.js';
 import { CYAN, DIM, ITALIC, RESET } from '../ansi-escape.js';
+import { ShortenPath } from '../scanner/shorten-path.js';
 
 type AlfredItem = AlfredFilter.Item;
 
@@ -13,6 +14,7 @@ export const maxScore = 102;
 export class AlfredResult {
   private itemsByScore: AlfredItem[][];
   private defaultIcon?: AlfredItem['icon'];
+  private pathShorter: ShortenPath;
   count = 0;
 
   constructor(readonly maxItems = 50) {
@@ -21,6 +23,8 @@ export class AlfredResult {
     const config = AlfredConfig.get();
     const customIconPath = config.vscodeVariety.icon;
     if (customIconPath) this.defaultIcon = { path: customIconPath };
+
+    this.pathShorter = ShortenPath.get();
   }
 
   private addItem = (item: AlfredItem, score: number) => {
@@ -54,7 +58,7 @@ export class AlfredResult {
       this.addItem(
         {
           title: shortName,
-          subtitle: fullPath,
+          subtitle: this.pathShorter.shorten(fullPath),
           arg: [fullPath],
           text: { copy: fullPath, largetype: baseName },
           autocomplete: baseName,

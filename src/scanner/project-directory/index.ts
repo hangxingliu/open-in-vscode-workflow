@@ -1,6 +1,6 @@
 import { basename, dirname, join, relative } from 'node:path';
 import { CacheManager } from '../../alfred/cache-manager.js';
-import { ScanDirectoryConfig } from '../../alfred/config.js';
+import { AlfredConfig, ScanDirectoryConfig } from '../../alfred/config.js';
 import { isDir, shortenPath, URLSet } from '../../utils.js';
 import { ScannerResult, ScannerState } from './types.js';
 import { scanSingleDirectory } from './utils.js';
@@ -12,6 +12,7 @@ export class ProjectDirectoryScanner {
 
   async scan(cacheManager?: CacheManager<ScannerResult>) {
     const { cacheEnabled } = this.opts;
+    const { isDebugMode } = AlfredConfig.get();
 
     if (cacheEnabled) {
       const cache = await cacheManager?.loadCache();
@@ -23,6 +24,8 @@ export class ProjectDirectoryScanner {
     }
 
     const baseDirs = [...this.opts.baseDirs].sort((a, b) => b.length - a.length);
+    if (isDebugMode) console.error(`scanning projects from: ${JSON.stringify(baseDirs)}`);
+
     for (let i = 0; i < baseDirs.length; i++) {
       const baseDir = baseDirs[i];
       if (await isDir(baseDir)) {
@@ -33,6 +36,7 @@ export class ProjectDirectoryScanner {
       }
     }
 
+    let attached = 0;
     for (let i = 0; i < this.opts.extraDirs.length; i++) {
       const attachDir = this.opts.extraDirs[i];
       if (await isDir(attachDir)) {
@@ -43,12 +47,17 @@ export class ProjectDirectoryScanner {
           shortName: baseName,
           aliasPath: shortenPath(attachDir),
         });
+        attached++;
         this.urlSet.addFsPath(attachDir);
       }
     }
 
     if (cacheManager && cacheEnabled) cacheManager.saveCache(this.result);
-    return this.result
+    if (isDebugMode)
+      console.error(
+        `scanned ${this.result.length} project(s), including ${attached} attached projects`
+      );
+    return this.result;
   }
 
   private async _scan(baseDir: string, fullPath: string, state: ScannerState) {

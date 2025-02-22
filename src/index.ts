@@ -1,185 +1,145 @@
 #!/usr/bin/env node
 
-import { AlfredQuery } from './alfred-query';
-import { AlfredResult } from './alfred-result';
-import { resultCache } from './cache';
-import { Config } from './config';
-import { fuzzyMatch } from './fuzzy-match';
-import { AbsPathScanner, Scanner, workspaceStorageDirs, WorkspaceStorageScanner } from './scanner';
-import { WorkspaceRemoteType, workspaceRemoteTypeMap } from './types';
-import { readBoolFromEnvironment, URLSet } from './utils';
+import { CacheManager } from './alfred/cache-manager.js';
+import { AlfredConfig } from './alfred/config.js';
+import { AlfredInputArg } from './alfred/input-argument.js';
+import { AlfredFilter } from './alfred/types.js';
+import { resultCache, scanProjectCache, scanWorkspaceCache } from './cache-rules.js';
+import { fuzzyMatch } from './match/fuzzy-match.js';
+import { getMatchingScore } from './match/get-score.js';
+import { matchRemoteQuery, MatchRemoteQueryResult } from './match/match-remote.js';
+import { Profiler } from './profiler.js';
+import { AlfredResult } from './alfred/result.js';
+import { ProjectDirectoryScanner } from './scanner/project-directory/index.js';
+import { ScannerResult } from './scanner/project-directory/types.js';
+import { WithPathPrefixScanner } from './scanner/scan-with-path-prefix.js';
+import { VSCodeWorkspaceScanner } from './scanner/vscode-workspace/index.js';
+import { ParsedWorkspaceFolderUri, WorkspaceRemoteType } from './scanner/vscode-workspace/types.js';
+import { workspaceRemoteTypeMap } from './scanner/vscode-workspace/utils.js';
+import { URLSet } from './utils.js';
 
 if (require.main === module) main();
-export async function main() {
-  const isDebug = process.env.alfred_debug === '1';
+export async function main(devTest?: { input: string }) {
+  // console.error(process.env);
+  // console.error(process.argv);
 
-  const rawQuery = String(process.argv[2] || '').trim();
+  const printResult = devTest ? false : true;
+  const input = AlfredInputArg.get(devTest ? devTest.input : undefined);
+  const config = AlfredConfig.get();
   const result = new AlfredResult();
-  if (rawQuery.length < 2 && rawQuery !== '/') {
+  const urlSet = new URLSet();
+  const profiler = new Profiler();
+
+  if (input.length < 2 && !input.str.startsWith('/')) {
     result.addNewWindowItem();
-    result.addConfigItem();
-    return outputResult(result.getItems());
+    return AlfredResult.getResult(result, printResult);
   }
-
-  const profiler = createProfiler();
-
-  const query = new AlfredQuery(rawQuery);
-  const config = new Config();
-  await config.resolve();
-  if (isDebug) {
-    profiler.tick('load config');
-    console.error(config.dump());
-  }
-
-  if (query.rawLC === 'cfg' || query.rawLC === 'conf' || query.rawLC === 'config')
-    result.addConfigItem();
-
-  const allPrefixes = config.customPrefixes;
-  const prefix = Object.keys(allPrefixes)
-    .sort((a, b) => b.length - a.length)
-    .find((it) => rawQuery.startsWith(it));
 
   // check if the user is querying with the prefix of absolute path
-  if (prefix) {
-    const matchedPath = allPrefixes[prefix];
-    const pathPrefix = matchedPath + rawQuery.slice(prefix.length);
-    const items = await AbsPathScanner.read(pathPrefix);
-    items.forEach((it) =>
-      result.addAbsolutePath(it.isDir, it.basename, it.fullPath, prefix, matchedPath)
-    );
-    return outputResult(result.getItems());
+  const matchByPrefix = config.customPrefixKeys.find((it) => input.str.startsWith(it));
+  if (matchByPrefix) {
+    const basePath = config.customPrefixes[matchByPrefix];
+    const prefix = basePath + input.str.slice(matchByPrefix.length);
+    const items = await WithPathPrefixScanner.read(prefix);
+    for (const it of items)
+      result.addAbsolutePath(it.isDir, it.basename, it.fullPath, matchByPrefix, basePath);
+    return AlfredResult.getResult(result, printResult);
   }
 
-  profiler.tick();
-  const urlSet = new URLSet();
-  const scanner = new Scanner(urlSet, config.scannerOptions);
-  if (readBoolFromEnvironment('scan_directories', true)) await scanner.scan();
-  if (isDebug) profiler.tick('scan directories');
+  let allWorkspaces: ParsedWorkspaceFolderUri[] = [];
+  let allProjects: ScannerResult[] = [];
+  let matchRemote: MatchRemoteQueryResult | undefined;
 
-  const wsScanner = new WorkspaceStorageScanner(urlSet, workspaceStorageDirs.code);
-  if (readBoolFromEnvironment('scan_code_workspace', true)) await wsScanner.scan();
-  if (isDebug) profiler.tick('scan workspace storage');
+  if (config.scanDirectory) {
+    const scanner = new ProjectDirectoryScanner(urlSet, config.scanDirectory);
+    const cache = new CacheManager(scanProjectCache, config.cacheEnabled);
+    allProjects = await scanner.scan(cache);
+  }
 
-  const { fragmentsLC } = query.getFragments();
+  // scan vscode workspace history
+  if (config.scanWorkspaceHistory) {
+    const scanner = new VSCodeWorkspaceScanner(urlSet, config.vscodeVariety.configDir);
+    const cache = new CacheManager(scanWorkspaceCache, config.cacheEnabled);
+    allWorkspaces = await scanner.scan(cache);
+    matchRemote = matchRemoteQuery(input, scanner.remoteNamesMap);
+  }
 
-  // check if the user is querying project on remote
-  const matchRemote = query.matchRemoteQuery(wsScanner.remoteNamesMap);
-  let matchRemoteType: WorkspaceRemoteType;
+  let matchRemoteType: WorkspaceRemoteType | undefined;
+  let matchRemoteNameLC: string | undefined;
+  let listAllInSpecifiedRemote = false;
+  const { fragmentsLC } = input.getSegments();
+
   if (matchRemote) {
+    matchRemoteNameLC = matchRemote.remoteLC;
     matchRemoteType = workspaceRemoteTypeMap.get(matchRemote.remoteLC);
-    if (isDebug) console.error(`debug: user is querying remote (${JSON.stringify(matchRemote)})`);
+    if (config.isDebugMode)
+      console.error(`debug: user is querying remote (${JSON.stringify(matchRemoteType)})`);
 
-    if (matchRemote.exact) {
-      const { remoteLC, queryLC, fragmentsLC } = matchRemote;
-      const listAll = queryLC.trim().length === 0;
-      for (let i = 0; i < wsScanner.result.length; i++) {
-        const item = wsScanner.result[i];
-        if (!item.remoteName) continue;
-        if (item.remoteName.toLowerCase() !== remoteLC) continue;
-        let score = 70;
-        if (!listAll)
-          score = AlfredQuery.getScore(
-            { nameLC: item.shortName.toLowerCase() },
-            { rawLC: queryLC, fragmentsLC },
-            70
-          );
-        if (score <= 0) continue;
-        result.addWorkspaceResult(item, score);
+    if (!matchRemote.queryLC) listAllInSpecifiedRemote = true;
+    allWorkspaces = allWorkspaces.filter((it) => {
+      if (matchRemoteType && it.remoteType !== matchRemoteType) return false;
+      if (matchRemoteNameLC) {
+        if (!it.remoteName) return false;
+        if (it.remoteName.toLowerCase() !== matchRemoteNameLC) return false;
       }
-    }
+      return true;
+    });
   }
 
-  let i2 = wsScanner.result.length;
-  if (matchRemote?.exact) i2 = 0;
-  for (let i = 0; i < i2; i++) {
-    const item = wsScanner.result[i];
-    let score = 0;
-    if (matchRemote) {
-      const { remoteLC, queryLC, fragmentsLC } = matchRemote;
-      if (
-        item.remoteName?.toLowerCase() === remoteLC ||
-        (matchRemoteType && matchRemoteType === item.remoteType)
-      ) {
-        score = AlfredQuery.getScore(
-          { nameLC: item.shortName.toLowerCase() },
-          { rawLC: queryLC, fragmentsLC },
-          70
-        );
-      } else {
-        continue;
-      }
+  for (let i = 0; i < allWorkspaces.length; i++) {
+    const item = allWorkspaces[i];
+
+    let score: number;
+    if (listAllInSpecifiedRemote) {
+      score = 70;
     } else {
-      score = AlfredQuery.getScore(
-        { nameLC: item.shortName.toLowerCase() },
-        { rawLC: query.rawLC, fragmentsLC },
-        50
-      );
+      const itemNameLC = item.shortName.toLowerCase();
+      itemNameLC;
+      score = matchRemote
+        ? getMatchingScore(itemNameLC, matchRemote.queryLC, matchRemote.fragmentsLC, 70)
+        : getMatchingScore(itemNameLC, input.strLC, fragmentsLC, 50);
     }
 
     if (score <= 0) continue;
     result.addWorkspaceResult(item, score);
   }
-  if (isDebug) profiler.tick(`match from ${wsScanner.result.length} workspace items`);
 
-  i2 = scanner.result.length;
-  if (matchRemote?.exact) i2 = 0;
-  for (let i = 0; i < i2; i++) {
-    const item = scanner.result[i];
-    const score = AlfredQuery.getScore(
-      { nameLC: item.shortName.toLowerCase() },
-      { rawLC: query.rawLC, fragmentsLC },
-      50
-    );
-    if (score > 0) {
-      result.addScanResult(item, score);
-      if (result.count >= result.maxItems * 2) break;
-    }
+  for (let i = 0, i2 = matchRemote?.exact ? 0 : allProjects.length; i < i2; i++) {
+    const item = allProjects[i];
+    const score = getMatchingScore(item.shortName.toLowerCase(), input.strLC, fragmentsLC, 50);
+    if (score <= 0) continue;
+
+    result.addScanResult(item, score);
+    if (result.count >= result.maxItems * 2) break;
   }
-  if (isDebug) profiler.tick(`match from ${scanner.result.length} directories`);
 
-  let items = result.getItems();
+  //
+  // filter again
+  //
+  const items = result.getItems();
+  const cache = new CacheManager(resultCache, config.cacheEnabled);
   if (items.length > 0) {
-    resultCache.saveCache(items);
+    cache.saveCache(items);
   } else {
-    const prevItems = await resultCache.loadCache();
+    const prevItems = await cache.loadCache();
     if (prevItems) {
-      console.error(`info: fuzzy matching "${query.rawLC}" from ${prevItems.length} prevItems`);
-      items = prevItems
-        .map((it) => {
-          const score = fuzzyMatch(it.title.toLowerCase(), query.rawLC);
-          if (score <= 0) return;
-          return Object.assign(it, { score });
-        })
-        .filter((it) => it)
-        .sort((a, b) => b.score - a.score)
-        .map((it) => {
-          if (isDebug) console.error(`debug: fuzzy matched "${it.title}" with score ${it.score}`);
-          delete it.score;
-          return it;
-        });
+      console.error(`info: fuzzy matching "${input.strLC}" from ${prevItems.length} prevItems`);
+
+      const itemsWithScore: Array<AlfredFilter.Item & { score: number }> = [];
+      for (const prev of prevItems) {
+        const score = fuzzyMatch(prev.title.toLowerCase(), input.strLC);
+        if (score <= 0) continue;
+        itemsWithScore.push(Object.assign(prev, { score }));
+      }
+      itemsWithScore.sort((a, b) => b.score - a.score);
+
+      for (const item of itemsWithScore) {
+        if (config.cacheEnabled)
+          console.error(`debug: fuzzy matched "${item.title}" with score ${item.score}`);
+        delete (item as Partial<typeof item>).score;
+        items.push(item);
+      }
     }
   }
-  return outputResult(items);
-
-  function outputResult(items: unknown[]) {
-    if (isDebug) console.log(JSON.stringify({ items }, null, 2));
-    else console.log(JSON.stringify({ items }));
-  }
-}
-
-function createProfiler() {
-  let prev = process.hrtime.bigint();
-  return {
-    tick: (msg?: string) => {
-      if (!msg) {
-        prev = process.hrtime.bigint();
-        return;
-      }
-      const now = process.hrtime.bigint();
-      const diff = Number(now - prev) * 0.001;
-      if (diff > 1000) console.error(`profiler: +${(diff * 0.001).toFixed(2)}ms ${msg}`);
-      else console.error(`profiler: +${diff.toFixed(2)}µs ${msg}`);
-      prev = now;
-    },
-  };
+  return AlfredResult.getResult(items, printResult);
 }

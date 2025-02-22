@@ -1,8 +1,8 @@
 export class AlfredInputArg {
   //#region singleton
   private static instance: AlfredInputArg | undefined;
-  static get() {
-    if (!this.instance) this.instance = new AlfredInputArg();
+  static get(debugInput?: string) {
+    if (!this.instance) this.instance = new AlfredInputArg(debugInput);
     return this.instance;
   }
   //#endregion singleton
@@ -13,8 +13,8 @@ export class AlfredInputArg {
   readonly strLC: string;
   readonly args: string[];
   readonly length: number;
-  private constructor() {
-    const str = (process.argv[2] || '').trim();
+  private constructor(debugInput?: string) {
+    const str = ((typeof debugInput === 'string' ? debugInput : process.argv[2]) || '').trim();
 
     this.str = str;
     this.length = str.length;

@@ -1,5 +1,9 @@
 .vscode/*.json
 
+*.env
+!example.dev.env
+cache
+
 workflow/js/*
 libs
 dist

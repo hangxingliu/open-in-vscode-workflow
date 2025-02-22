@@ -2,6 +2,8 @@ import { resolvePath } from '../utils.js';
 import { allVarieties, defaultVariety, VSCodeVariety } from '../vscode-varieties.js';
 import * as defaults from './config-defaults.js';
 
+export type PrefixString = `${string}/`;
+export type CustomPrefixMap = Record<PrefixString, PrefixString>;
 export type ScanDirectoryConfig = {
   /** Enable scan cache to speed up subsequent scan */
   cacheEnabled: boolean;
@@ -36,8 +38,8 @@ export class AlfredConfig {
   readonly scanWorkspaceHistory: boolean;
 
   /** Sorted prefix keys (longer to shorter) */
-  readonly customPrefixKeys: string[];
-  readonly customPrefixes: Record<string, string>;
+  readonly customPrefixKeys: PrefixString[];
+  readonly customPrefixes: CustomPrefixMap;
 
   readonly cacheEnabled: boolean;
 
@@ -81,33 +83,36 @@ export class AlfredConfig {
     this.scanWorkspaceHistory = AlfredConfig.isTrue(rawConfig.scanWorkspaces);
 
     //
-    const prefixes: Record<string, string> = { ...defaults.CUSTOM_PREFIXES };
+    const prefixes: CustomPrefixMap = { ...defaults.CUSTOM_PREFIXES };
     if (rawConfig.prefixes) {
       try {
-        const parsed: Record<string, string> = JSON.parse(rawConfig.prefixes);
+        const parsed: CustomPrefixMap = JSON.parse(rawConfig.prefixes);
         if (parsed && typeof parsed === 'object') {
           const entries = Object.entries(parsed);
-          for (const [key, val] of entries) if (typeof val === 'string') prefixes[key] = val;
+          for (const [key, val] of entries)
+            if (key && typeof val === 'string') prefixes[AlfredConfig.normalizePrefix(key)] = val;
         }
       } catch {
         // noop
       }
     }
-    const prefixKeys = Object.keys(prefixes).sort((a, b) => b.length - a.length);
-    for (const key of prefixKeys) prefixes[key] = resolvePath(prefixes[key]);
+
+    const prefixKeys = Object.keys(prefixes).sort((a, b) => b.length - a.length) as PrefixString[];
+    for (const key of prefixKeys)
+      prefixes[key] = AlfredConfig.normalizePrefix(resolvePath(prefixes[key]));
     this.customPrefixes = prefixes;
     this.customPrefixKeys = prefixKeys;
 
     //
     if (rawConfig.projectsDir) {
       const projectsDirs = [rawConfig.projectsDir];
-      const more = (rawConfig.moreProjectsDir || '').split(/\n+/).filter(Boolean);
+      const more = (rawConfig.moreProjectsDir || '').split(/[\n:]+/).filter(Boolean);
       projectsDirs.push(...more);
 
-      let extraDirs = (rawConfig.extraDirs || '').split(/\n+/).filter(Boolean);
+      let extraDirs = (rawConfig.extraDirs || '').split(/[\n:]+/).filter(Boolean);
       extraDirs = Array.from(new Set(extraDirs.map(resolvePath)));
 
-      const baseDirs = Array.from(new Set(projectsDirs.map(resolvePath)));
+      const baseDirs = Array.from(new Set(projectsDirs.filter(Boolean).map(resolvePath)));
       const maxDepth = AlfredConfig.getPositiveInt(rawConfig.scanDepth, defaults.SCAN_DEPTH);
       this.scanDirectory = {
         cacheEnabled: this.cacheEnabled,
@@ -131,5 +136,8 @@ export class AlfredConfig {
     const val = parseInt(config, 10);
     if (!Number.isSafeInteger(val) || val < 0) return defaultVal;
     return val;
+  }
+  static normalizePrefix(prefix: string): PrefixString {
+    return prefix.replace(/\/*$/, '/') as PrefixString;
   }
 }

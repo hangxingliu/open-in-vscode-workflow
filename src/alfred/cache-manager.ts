@@ -2,7 +2,8 @@ import { JsonValue } from 'type-fest';
 import { tmpdir as getTmpDir } from 'node:os';
 import { isAbsolute, resolve } from 'node:path';
 import { existsSync, mkdirSync } from 'node:fs';
-import { readFile, stat, writeFile } from 'node:fs/promises';
+import { readFile, writeFile } from 'node:fs/promises';
+import { stat } from "../utils.js";
 
 export type CacheRule<T> = {
   name: string;
@@ -31,7 +32,12 @@ function getCacheDir() {
 }
 
 export class CacheManager<T> {
-  static CACHE_DIR = getCacheDir();
+  private static _CACHE_DIR: string | undefined;
+  static get CACHE_DIR() {
+    if (!CacheManager._CACHE_DIR) CacheManager._CACHE_DIR = getCacheDir();
+    return CacheManager._CACHE_DIR;
+  }
+
   static DEFAULT_FROM_CACHE: <T>(it: T) => any = (it) => it;
   static DEFAULT_TO_CACHE: <T>(it: T) => any = (it) => it;
 

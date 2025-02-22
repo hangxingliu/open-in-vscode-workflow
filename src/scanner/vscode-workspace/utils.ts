@@ -1,5 +1,21 @@
 import { basename } from 'node:path';
 import { ParsedWorkspaceFolderUri, WorkspaceRemoteType } from './types.js';
+import { homedir } from 'node:os';
+import { exists } from '../../utils.js';
+
+const checkedVolume = new Map<string, boolean>();
+function volumeExists(filePath: string) {
+  // '' / 'Volumes' / name
+  const volumeName = filePath.split('/')[2];
+  if (!volumeName) return false;
+
+  const checked = checkedVolume.get(volumeName);
+  if (typeof checked === 'boolean') return checked;
+
+  const result = exists(`/Volumes/${volumeName}`);
+  checkedVolume.set(volumeName, result);
+  return result;
+}
 
 export const workspaceRemoteTypeMap = new Map<string, WorkspaceRemoteType>([
   ['gh', 'Github'],
@@ -25,7 +41,12 @@ export function parseWorkspaceFolderUri(url: URL): ParsedWorkspaceFolderUri | un
   const pathName = decodeURI(url.pathname);
   const baseName = basename(pathName);
   if (url.protocol === 'file:') {
-    // if (!exists(pathName)) return;
+    const filePath = pathName;
+    if (filePath.startsWith('/Volumes')) {
+      if (!volumeExists(filePath)) return;
+    } else if (!exists(filePath)) {
+      return;
+    }
     return { url, baseName, shortName: baseName };
   }
 

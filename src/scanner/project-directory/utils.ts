@@ -1,12 +1,10 @@
 import { join } from 'node:path';
 import { readDir } from '../../utils.js';
+import type { ScanDirectoryConfig } from '../../alfred/config.js';
 
 export async function scanSingleDirectory(
   fullPath: string,
-  opts: {
-    projectFiles: ReadonlyArray<string | RegExp>;
-    pruningNames: ReadonlyArray<string | RegExp>;
-  }
+  opts: Pick<ScanDirectoryConfig, 'projectFiles' | 'pruningNames'>
 ) {
   let isProject = false;
   const nextScan: string[] = [];
