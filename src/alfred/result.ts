@@ -1,8 +1,10 @@
 import * as path from 'path';
-import { userConfigFile } from './config';
-import { AlfredFilter } from "./alfred/types.js";
-import { ScannerResult, WorkspaceStorageResult } from './types.js';
-import { resolvePath } from './utils';
+import { AlfredFilter } from './types.js';
+import { AlfredConfig } from './config.js';
+import type { ScannerResult } from '../scanner/project-directory/types.js';
+import type { ParsedWorkspaceFolderUri } from '../scanner/vscode-workspace/types.js';
+import { CYAN, DIM, ITALIC, RESET } from '../ansi-escape.js';
+
 type AlfredItem = AlfredFilter.Item;
 
 /** 0-100, 101 for abs path, 102 for new windows */
@@ -10,10 +12,15 @@ export const maxScore = 102;
 
 export class AlfredResult {
   private itemsByScore: AlfredItem[][];
+  private defaultIcon?: AlfredItem['icon'];
   count = 0;
 
   constructor(readonly maxItems = 50) {
     this.itemsByScore = new Array(maxScore + 1).fill(null).map(() => []);
+
+    const config = AlfredConfig.get();
+    const customIconPath = config.vscodeVariety.icon;
+    if (customIconPath) this.defaultIcon = { path: customIconPath };
   }
 
   private addItem = (item: AlfredItem, score: number) => {
@@ -34,15 +41,16 @@ export class AlfredResult {
         autocomplete: item.baseName,
         text: { copy: item.fsPath, largetype: item.baseName },
         quicklookurl: item.fsPath,
+        icon: this.defaultIcon,
       },
       score
     );
   }
 
-  addWorkspaceResult(item: WorkspaceStorageResult, score = 50) {
-    const { uri, shortName, baseName } = item;
-    if (uri.protocol === 'file:') {
-      const fullPath = decodeURI(uri.pathname);
+  addWorkspaceResult(item: ParsedWorkspaceFolderUri, score = 50) {
+    const { url, shortName, baseName } = item;
+    if (url.protocol === 'file:') {
+      const fullPath = decodeURI(url.pathname);
       this.addItem(
         {
           title: shortName,
@@ -50,34 +58,36 @@ export class AlfredResult {
           arg: [fullPath],
           text: { copy: fullPath, largetype: baseName },
           autocomplete: baseName,
+          icon: this.defaultIcon,
         },
         score
       );
       return;
     }
 
-    let title: string = item.remoteType;
+    let title: string | undefined = item.remoteType;
     if (!title) title = 'Remote';
     title = `(${title}) `;
     if (item.remoteName) title += `${item.remoteName} > `;
 
-    const basename = path.basename(item.uri.pathname);
+    const basename = path.basename(item.url.pathname);
     title += basename;
 
     const arg: string[] = [];
-    if (item.uri.protocol === 'vscode-remote:') {
-      arg.push('--remote', decodeURIComponent(item.uri.host), item.uri.pathname);
+    if (item.url.protocol === 'vscode-remote:') {
+      arg.push('--remote', decodeURIComponent(item.url.host), item.url.pathname);
     } else {
-      arg.push(`--folder-uri=${item.uri.toString()}`);
+      arg.push(`--folder-uri=${item.url.toString()}`);
     }
 
     this.addItem(
       {
         title,
-        subtitle: item.uri.pathname,
+        subtitle: item.url.pathname,
         arg,
         autocomplete: basename,
-        text: { copy: item.uri.pathname, largetype: basename },
+        text: { copy: item.url.pathname, largetype: basename },
+        icon: this.defaultIcon,
       },
       score
     );
@@ -98,7 +108,7 @@ export class AlfredResult {
         autocomplete: abbrPath + (isDir ? '/' : ''),
         arg: [fullPath],
         text: { copy: fullPath, largetype: basename },
-        icon: { type: 'fileicon', path: fullPath },
+        icon: this.defaultIcon || { type: 'fileicon', path: fullPath },
         quicklookurl: fullPath,
       },
       101
@@ -108,27 +118,16 @@ export class AlfredResult {
   addNewWindowItem() {
     this.addItem(
       {
-        title: '+ New window',
+        title: 'New window',
         subtitle: 'Open a new Visual Studio Code window',
         arg: ['--new-window'],
       },
       maxScore
     );
   }
-  addConfigItem() {
-    this.addItem(
-      {
-        title: 'Edit configuration for scanning projects',
-        subtitle: userConfigFile,
-        arg: [resolvePath(userConfigFile)],
-        icon: { path: 'config.png' },
-      },
-      maxScore
-    );
-  }
 
   getItems() {
-    const items = [];
+    const items: AlfredFilter.Item[] = [];
     let len = 0;
     for (let i = maxScore; i >= 0; i--) {
       const subItems = this.itemsByScore[i].slice(0, this.maxItems - len);
@@ -137,5 +136,28 @@ export class AlfredResult {
       if (len > this.maxItems) break;
     }
     return items;
+  }
+
+  static getResult(items: AlfredResult | AlfredFilter.Item[], print: boolean) {
+    if (items instanceof AlfredResult) items = items.getItems();
+    const result: AlfredFilter.Result = { items };
+    if (print) {
+      if (AlfredConfig.get().isDebugMode) console.log(JSON.stringify(result, null, 2));
+      else console.log(JSON.stringify(result));
+    }
+    return result;
+  }
+
+  static debugResult(result: AlfredFilter.Result) {
+    let i = 1;
+    for (const item of result.items) {
+      const command = i < 10 ? `⌘ + ${i}` : '     ';
+      process.stderr.write(
+        `${CYAN}${item.title.padEnd(30)} ${DIM}${command}${RESET}\n` +
+          `  ${ITALIC}${DIM}${item.subtitle}${RESET}\n`
+      );
+      i++;
+    }
+    process.stderr.write(`${DIM}total: ${result.items.length} item(s)${RESET}\n`);
   }
 }
