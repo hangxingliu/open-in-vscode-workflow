@@ -7,7 +7,9 @@ pushd "$( dirname "${BASH_SOURCE[0]}" )/.." || exit 1;
 command -v rsync >/dev/null || throw "rsync is not installed!";
 
 FROM_DIR="./workflow";
-ALFRED_WORKFLOWS_DIR="$HOME/Library/Application Support/Alfred/Alfred.alfredpreferences/workflows"
+ALFRED_WORKFLOWS_DIR="$(node ./scripts/get-alfred-workflows-dir.mjs)";
+[ -n "$ALFRED_WORKFLOWS_DIR" ] || throw "failed to get Alfred workflows directory";
+
 AWK_IF='/com.hangxingliu.open-in-vscode-workflow/{ok=1;} END{if(!ok)exit 1;}';
 
 RSYNC_OPTS=(
