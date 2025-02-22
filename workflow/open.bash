@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2154
 
+# alfred configs
+#   config_vscode_path
+#   config_vscode_variety
+
 # default configs
 default_prepend_path=( "/usr/local/bin" "/opt/homebrew/bin" "$HOME/.cargo/bin" );
 default_code_variety="code";
@@ -33,6 +37,8 @@ IFS=':' read -ra sys_path_array <<< "$PATH";
 add_path() {
   local path merged
   for path in "${@}"; do
+    # shellcheck disable=SC2088
+    [[ "$path" == '~/'* ]] && path="${HOME}${path#'~'}";
     has_item "$path" "${sys_path_array[@]}" && continue;
     test -d "$path" || continue;
     merged="${path}:${merged}";
@@ -69,12 +75,6 @@ fi
 
 next_opts=();
 if [ -n "$1" ]; then
-  workflow_config_file="${HOME}/.open-in-vscode.json"
-  if [ "$1" == "$workflow_config_file" ] && [ ! -f "$workflow_config_file" ]; then
-    cp default.open-in-vscode.json "$workflow_config_file" &&
-      echo "Created '$workflow_config_file' from default config" >&2;
-  fi
-
   next_opts+=("${@}");
 else
   next_opts+=("--new-window");
