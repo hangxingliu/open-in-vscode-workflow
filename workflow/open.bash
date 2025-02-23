@@ -14,6 +14,9 @@ known_code_varieties=(
   code          "Visual Studio Code.app"
   code-insiders "Visual Studio Code - Insiders.app"
   codium        "VSCodium.app"
+  cursor        "Cursor.app"
+  # vim         "vim"
+  # nvim        "nvim"
 )
 
 # basic utils

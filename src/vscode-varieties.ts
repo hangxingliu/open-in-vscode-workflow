@@ -33,5 +33,26 @@ export const allVarieties: ReadonlyArray<VSCodeVariety> = [
     configDir: 'VSCodium',
     icon: 'icons/codium.png',
   },
+  {
+    id: 'cursor',
+    bin: 'cursor',
+    app: 'Cursor.app',
+    configDir: 'Cursor',
+    icon: '/Applications/Cursor.app/Contents/Resources/Cursor.icns'
+  },
+  {
+    id: 'vim',
+    bin: 'vim',
+    app: '',
+    configDir: '',
+    icon: 'icons/vim.png',
+  },
+  {
+    id: 'neovim',
+    bin: 'nvim',
+    app: '',
+    configDir: '',
+    icon: 'icons/neovim.png',
+  }
 ];
 export const defaultVariety = allVarieties[0];
