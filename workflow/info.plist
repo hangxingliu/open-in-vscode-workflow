@@ -12,7 +12,7 @@
 		<array>
 			<dict>
 				<key>destinationuid</key>
-				<string>13430A14-AADC-42EC-986C-9F8DD6A4B626</string>
+				<string>BB656F36-3E69-4F0E-8D6A-95332FE9D3F7</string>
 				<key>modifiers</key>
 				<integer>0</integer>
 				<key>modifiersubtext</key>
@@ -25,7 +25,70 @@
 		<array>
 			<dict>
 				<key>destinationuid</key>
+				<string>BB656F36-3E69-4F0E-8D6A-95332FE9D3F7</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+		<key>BB656F36-3E69-4F0E-8D6A-95332FE9D3F7</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>CDEA6050-5824-4DAE-A25C-B22E83D39E6D</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>sourceoutputuid</key>
+				<string>0EE043B9-73B4-4762-817D-90B229B8FD9F</string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>destinationuid</key>
+				<string>CDEA6050-5824-4DAE-A25C-B22E83D39E6D</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>sourceoutputuid</key>
+				<string>61349ABF-A75D-4234-B5DA-826531978DAC</string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>destinationuid</key>
 				<string>13430A14-AADC-42EC-986C-9F8DD6A4B626</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+		<key>CDEA6050-5824-4DAE-A25C-B22E83D39E6D</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>F1FE73CE-D0C7-471D-B3F1-F3EC5F3B8AD3</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+		<key>F1FE73CE-D0C7-471D-B3F1-F3EC5F3B8AD3</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>87BDE424-9AE9-4D99-9AE8-5E4490ADE594</string>
 				<key>modifiers</key>
 				<integer>0</integer>
 				<key>modifiersubtext</key>
@@ -48,25 +111,31 @@
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>concurrently</key>
-				<false/>
-				<key>escaping</key>
+				<key>alignment</key>
 				<integer>0</integer>
-				<key>script</key>
+				<key>backgroundcolor</key>
 				<string></string>
-				<key>scriptargtype</key>
-				<integer>1</integer>
-				<key>scriptfile</key>
-				<string>./open.bash</string>
-				<key>type</key>
-				<integer>8</integer>
+				<key>fadespeed</key>
+				<integer>0</integer>
+				<key>fillmode</key>
+				<integer>0</integer>
+				<key>font</key>
+				<string></string>
+				<key>ignoredynamicplaceholders</key>
+				<false/>
+				<key>largetypetext</key>
+				<string>{var:cmd_args_1} {var:cmd_args_2}</string>
+				<key>textcolor</key>
+				<string></string>
+				<key>wrapat</key>
+				<integer>50</integer>
 			</dict>
 			<key>type</key>
-			<string>alfred.workflow.action.script</string>
+			<string>alfred.workflow.output.largetype</string>
 			<key>uid</key>
-			<string>13430A14-AADC-42EC-986C-9F8DD6A4B626</string>
+			<string>8F472693-5414-4E1C-B1D8-A15C651309AA</string>
 			<key>version</key>
-			<integer>2</integer>
+			<integer>3</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -120,6 +189,135 @@
 		<dict>
 			<key>config</key>
 			<dict>
+				<key>concurrently</key>
+				<false/>
+				<key>escaping</key>
+				<integer>0</integer>
+				<key>script</key>
+				<string></string>
+				<key>scriptargtype</key>
+				<integer>1</integer>
+				<key>scriptfile</key>
+				<string>./open-in-terminal.bash</string>
+				<key>type</key>
+				<integer>8</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>CDEA6050-5824-4DAE-A25C-B22E83D39E6D</string>
+			<key>version</key>
+			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>escaping</key>
+				<integer>127</integer>
+				<key>script</key>
+				<string>{var:cmd_args_1} {var:cmd_args_2}</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.terminalcommand</string>
+			<key>uid</key>
+			<string>87BDE424-9AE9-4D99-9AE8-5E4490ADE594</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>delimiter</key>
+				<string>
+</string>
+				<key>discardemptyarguments</key>
+				<false/>
+				<key>outputas</key>
+				<integer>0</integer>
+				<key>trimarguments</key>
+				<true/>
+				<key>variableprefix</key>
+				<string>cmd_args_</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.utility.split</string>
+			<key>uid</key>
+			<string>F1FE73CE-D0C7-471D-B3F1-F3EC5F3B8AD3</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>conditions</key>
+				<array>
+					<dict>
+						<key>inputstring</key>
+						<string>{var:config_vscode_variety}</string>
+						<key>matchcasesensitive</key>
+						<false/>
+						<key>matchmode</key>
+						<integer>0</integer>
+						<key>matchstring</key>
+						<string>vim</string>
+						<key>outputlabel</key>
+						<string>terminal</string>
+						<key>uid</key>
+						<string>0EE043B9-73B4-4762-817D-90B229B8FD9F</string>
+					</dict>
+					<dict>
+						<key>inputstring</key>
+						<string>{var:config_vscode_variety}</string>
+						<key>matchcasesensitive</key>
+						<false/>
+						<key>matchmode</key>
+						<integer>0</integer>
+						<key>matchstring</key>
+						<string>nvim</string>
+						<key>outputlabel</key>
+						<string>terminal</string>
+						<key>uid</key>
+						<string>61349ABF-A75D-4234-B5DA-826531978DAC</string>
+					</dict>
+				</array>
+				<key>elselabel</key>
+				<string>app</string>
+				<key>hideelse</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.utility.conditional</string>
+			<key>uid</key>
+			<string>BB656F36-3E69-4F0E-8D6A-95332FE9D3F7</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>concurrently</key>
+				<false/>
+				<key>escaping</key>
+				<integer>0</integer>
+				<key>script</key>
+				<string></string>
+				<key>scriptargtype</key>
+				<integer>1</integer>
+				<key>scriptfile</key>
+				<string>./open.bash</string>
+				<key>type</key>
+				<integer>8</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>13430A14-AADC-42EC-986C-9F8DD6A4B626</string>
+			<key>version</key>
+			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
 				<key>acceptsmulti</key>
 				<integer>0</integer>
 				<key>filetypes</key>
@@ -149,31 +347,76 @@ This workflow can search your project from following places:
 
 ## Setup
 
+WIP ...
+
 ## Migration from Previous Version
 
-## Usage</string>
+WIP ...
+
+## Usage
+
+WIP ...</string>
 	<key>uidata</key>
 	<dict>
 		<key>0F3BE3C6-71FB-4B75-AE97-2CFADAAA883A</key>
 		<dict>
 			<key>xpos</key>
-			<real>245</real>
+			<real>80</real>
 			<key>ypos</key>
-			<real>200</real>
+			<real>325</real>
 		</dict>
 		<key>13430A14-AADC-42EC-986C-9F8DD6A4B626</key>
 		<dict>
+			<key>note</key>
+			<string>Open selected project in configured application</string>
 			<key>xpos</key>
-			<real>450</real>
+			<real>540</real>
 			<key>ypos</key>
-			<real>55</real>
+			<real>325</real>
+		</dict>
+		<key>87BDE424-9AE9-4D99-9AE8-5E4490ADE594</key>
+		<dict>
+			<key>xpos</key>
+			<real>820</real>
+			<key>ypos</key>
+			<real>185</real>
 		</dict>
 		<key>8DAF3DF3-7B04-4679-AD1D-156D2CC288C1</key>
 		<dict>
 			<key>xpos</key>
-			<real>245</real>
+			<real>80</real>
 			<key>ypos</key>
-			<real>55</real>
+			<real>180</real>
+		</dict>
+		<key>8F472693-5414-4E1C-B1D8-A15C651309AA</key>
+		<dict>
+			<key>note</key>
+			<string>This block is used for DEBUGGING</string>
+			<key>xpos</key>
+			<real>820</real>
+			<key>ypos</key>
+			<real>30</real>
+		</dict>
+		<key>BB656F36-3E69-4F0E-8D6A-95332FE9D3F7</key>
+		<dict>
+			<key>xpos</key>
+			<real>330</real>
+			<key>ypos</key>
+			<real>270</real>
+		</dict>
+		<key>CDEA6050-5824-4DAE-A25C-B22E83D39E6D</key>
+		<dict>
+			<key>xpos</key>
+			<real>540</real>
+			<key>ypos</key>
+			<real>185</real>
+		</dict>
+		<key>F1FE73CE-D0C7-471D-B3F1-F3EC5F3B8AD3</key>
+		<dict>
+			<key>xpos</key>
+			<real>705</real>
+			<key>ypos</key>
+			<real>215</real>
 		</dict>
 	</dict>
 	<key>userconfigurationconfig</key>
@@ -217,6 +460,18 @@ This workflow can search your project from following places:
 					<array>
 						<string>VSCodium</string>
 						<string>codium</string>
+					</array>
+					<array>
+						<string>Cursor</string>
+						<string>cursor</string>
+					</array>
+					<array>
+						<string>Vim</string>
+						<string>vim</string>
+					</array>
+					<array>
+						<string>Neovim</string>
+						<string>nvim</string>
 					</array>
 				</array>
 			</dict>
@@ -300,7 +555,7 @@ This workflow can search your project from following places:
 				<key>trim</key>
 				<true/>
 				<key>verticalsize</key>
-				<integer>6</integer>
+				<integer>3</integer>
 			</dict>
 			<key>description</key>
 			<string>More directories for automatically scanning projects (One directory path each line)</string>
@@ -310,6 +565,27 @@ This workflow can search your project from following places:
 			<string>textarea</string>
 			<key>variable</key>
 			<string>config_more_projects_dir</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string></string>
+				<key>required</key>
+				<false/>
+				<key>trim</key>
+				<true/>
+				<key>verticalsize</key>
+				<integer>6</integer>
+			</dict>
+			<key>description</key>
+			<string>One project path each line</string>
+			<key>label</key>
+			<string>Extra Projects</string>
+			<key>type</key>
+			<string>textarea</string>
+			<key>variable</key>
+			<string>config_extra_dirs</string>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -335,6 +611,25 @@ This workflow can search your project from following places:
 			<string>slider</string>
 			<key>variable</key>
 			<string>config_scan_depth</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<true/>
+				<key>required</key>
+				<false/>
+				<key>text</key>
+				<string></string>
+			</dict>
+			<key>description</key>
+			<string>Continue to scan its child folders even if current folder is a project root folder</string>
+			<key>label</key>
+			<string>Scan Sub Projects</string>
+			<key>type</key>
+			<string>checkbox</string>
+			<key>variable</key>
+			<string>config_scan_sub_projects</string>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -374,7 +669,28 @@ This workflow can search your project from following places:
 			<key>type</key>
 			<string>textarea</string>
 			<key>variable</key>
-			<string>prepend_path</string>
+			<string>config_prepend_path</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string>{ "/": "/", "~/": "~/" }</string>
+				<key>required</key>
+				<false/>
+				<key>trim</key>
+				<true/>
+				<key>verticalsize</key>
+				<integer>3</integer>
+			</dict>
+			<key>description</key>
+			<string>Some path prefixes used for locating projects by path and shortening displayed path</string>
+			<key>label</key>
+			<string>Custom Path Prefix</string>
+			<key>type</key>
+			<string>textarea</string>
+			<key>variable</key>
+			<string>config_custom_prefixes</string>
 		</dict>
 	</array>
 	<key>version</key>

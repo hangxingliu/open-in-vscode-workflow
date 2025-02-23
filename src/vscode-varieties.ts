@@ -48,7 +48,7 @@ export const allVarieties: ReadonlyArray<VSCodeVariety> = [
     icon: 'icons/vim.png',
   },
   {
-    id: 'neovim',
+    id: 'nvim',
     bin: 'nvim',
     app: '',
     configDir: '',
