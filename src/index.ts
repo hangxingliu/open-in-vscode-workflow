@@ -110,7 +110,6 @@ export async function main(devTest?: { input: string }) {
     if (score <= 0) continue;
 
     result.addScanResult(item, score);
-    if (result.count >= result.maxItems * 2) break;
   }
 
   //

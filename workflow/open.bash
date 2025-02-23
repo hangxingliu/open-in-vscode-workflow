@@ -65,14 +65,17 @@ if [ -n "${config_vscode_path}" ]; then
   code_bin="${config_vscode_path}";
   log "Used custom path for code editor: ${code_bin}";
 else
-  [ -n "$config_vscode_variety" ] && code_bin="${config_vscode_variety}";
+  [ -n "$config_vscode_variety" ] && _code_bin="${config_vscode_variety}";
 
   for ((i=0;i<${#known_code_varieties[@]};i+=2)); do
-		[[ "${known_code_varieties[$i]}" == "${code_bin}" ]] || continue;
+		[[ "${known_code_varieties[$i]}" == "${_code_bin}" ]] || continue;
 		code_app="${known_code_varieties[$i+1]}";
     break;
 	done
-  [ -n "$code_app" ] || throw "Invalid code variety: '${code_bin}'";
+
+  if [ -n "$code_app" ]; then code_bin="${_code_bin}";
+  else log "WARN: Invalid code variety: '${code_bin}'";
+  fi
   log "Used code variety ${code_bin} '${code_app}'";
 fi
 
