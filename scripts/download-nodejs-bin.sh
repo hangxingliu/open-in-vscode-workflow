@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-NODEJS_VERSION=v22.12.0
+NODEJS_VERSION=v22.14.0
 
 throw() { printf "${RED}fatal: %s${RESET}\n" "$1" >&2; exit 1; }
 print_cmd() { printf "${CYAN}\$ %s${RESET}\n" "$*"; }
@@ -27,8 +27,8 @@ fetch "https://nodejs.org/dist/${NODEJS_VERSION}/node-${NODEJS_VERSION}-darwin-a
 fetch "https://nodejs.org/dist/${NODEJS_VERSION}/node-${NODEJS_VERSION}-darwin-x64.tar.gz";
 
 echo "
-293dcc6c2408da21562d135b0412525e381bb6fe150d688edb58fe850d0f3e13  node-${NODEJS_VERSION}-darwin-arm64.tar.gz
-52bc25dd026db7247c3c00439afdb83e95087248267f02d6c1a7250d1f896173  node-${NODEJS_VERSION}-darwin-x64.tar.gz
+e9404633bc02a5162c5c573b1e2490f5fb44648345d64a958b17e325729a5e42  node-${NODEJS_VERSION}-darwin-arm64.tar.gz
+6698587713ab565a94a360e091df9f6d91c8fadda6d00f0cf6526e9b40bed250  node-${NODEJS_VERSION}-darwin-x64.tar.gz
 " | execute sha256sum --check -;
 
 execute tar xzf "node-${NODEJS_VERSION}-darwin-arm64.tar.gz";
