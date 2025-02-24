@@ -10,14 +10,11 @@ default_code_variety="vim";
 # basic utils
 log() { printf "%s\n" "$*" >&2; }
 throw() { log "Fatal: $1"; exit 1; }
-execute() {
-  log "$ $*";
-  [ -n "$alfred_dryrun" ] && return 0;
-  "$@" || throw "Failed to execute '$1'";
-}
+execute() { log "$ $*"; "$@" || throw "Failed to execute '$1'"; }
 
 THIS_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )";
 execute source "${THIS_DIR}/include/prepend_path.bash";
+log "Number of the argument(s): ${#}";
 
 code_bin="${default_code_variety}";
 if [ -n "${config_vscode_path}" ]; then
