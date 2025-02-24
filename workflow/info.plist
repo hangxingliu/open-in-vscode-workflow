@@ -12,6 +12,16 @@
 		<array>
 			<dict>
 				<key>destinationuid</key>
+				<string>E89FEAA1-C0CE-469B-BBB6-A2BF582F3E64</string>
+				<key>modifiers</key>
+				<integer>1048576</integer>
+				<key>modifiersubtext</key>
+				<string>Select an editor to open ...</string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>destinationuid</key>
 				<string>BB656F36-3E69-4F0E-8D6A-95332FE9D3F7</string>
 				<key>modifiers</key>
 				<integer>0</integer>
@@ -25,7 +35,7 @@
 		<array>
 			<dict>
 				<key>destinationuid</key>
-				<string>BB656F36-3E69-4F0E-8D6A-95332FE9D3F7</string>
+				<string>C9E5A566-E864-4E6A-B4B8-D26E6CAE13CA</string>
 				<key>modifiers</key>
 				<integer>0</integer>
 				<key>modifiersubtext</key>
@@ -71,11 +81,49 @@
 				<false/>
 			</dict>
 		</array>
+		<key>C9E5A566-E864-4E6A-B4B8-D26E6CAE13CA</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>E89FEAA1-C0CE-469B-BBB6-A2BF582F3E64</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>sourceoutputuid</key>
+				<string>35A59653-DA62-4763-8252-797DEC8C88B0</string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>destinationuid</key>
+				<string>BB656F36-3E69-4F0E-8D6A-95332FE9D3F7</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
 		<key>CDEA6050-5824-4DAE-A25C-B22E83D39E6D</key>
 		<array>
 			<dict>
 				<key>destinationuid</key>
 				<string>F1FE73CE-D0C7-471D-B3F1-F3EC5F3B8AD3</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+		<key>E89FEAA1-C0CE-469B-BBB6-A2BF582F3E64</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>BB656F36-3E69-4F0E-8D6A-95332FE9D3F7</string>
 				<key>modifiers</key>
 				<integer>0</integer>
 				<key>modifiersubtext</key>
@@ -111,29 +159,47 @@
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>alignment</key>
-				<integer>0</integer>
-				<key>backgroundcolor</key>
-				<string></string>
-				<key>fadespeed</key>
-				<integer>0</integer>
-				<key>fillmode</key>
-				<integer>0</integer>
-				<key>font</key>
-				<string></string>
-				<key>ignoredynamicplaceholders</key>
+				<key>alfredfiltersresults</key>
 				<false/>
-				<key>largetypetext</key>
-				<string>{var:cmd_args_1} {var:cmd_args_2}</string>
-				<key>textcolor</key>
+				<key>alfredfiltersresultsmatchmode</key>
+				<integer>0</integer>
+				<key>argumenttreatemptyqueryasnil</key>
+				<true/>
+				<key>argumenttrimmode</key>
+				<integer>0</integer>
+				<key>argumenttype</key>
+				<integer>2</integer>
+				<key>escaping</key>
+				<integer>0</integer>
+				<key>queuedelaycustom</key>
+				<integer>3</integer>
+				<key>queuedelayimmediatelyinitially</key>
+				<true/>
+				<key>queuedelaymode</key>
+				<integer>0</integer>
+				<key>queuemode</key>
+				<integer>1</integer>
+				<key>runningsubtext</key>
 				<string></string>
-				<key>wrapat</key>
-				<integer>50</integer>
+				<key>script</key>
+				<string></string>
+				<key>scriptargtype</key>
+				<integer>1</integer>
+				<key>scriptfile</key>
+				<string>./select-an-editor.bash</string>
+				<key>subtext</key>
+				<string></string>
+				<key>title</key>
+				<string></string>
+				<key>type</key>
+				<integer>8</integer>
+				<key>withspace</key>
+				<false/>
 			</dict>
 			<key>type</key>
-			<string>alfred.workflow.output.largetype</string>
+			<string>alfred.workflow.input.scriptfilter</string>
 			<key>uid</key>
-			<string>8F472693-5414-4E1C-B1D8-A15C651309AA</string>
+			<string>E89FEAA1-C0CE-469B-BBB6-A2BF582F3E64</string>
 			<key>version</key>
 			<integer>3</integer>
 		</dict>
@@ -189,6 +255,67 @@
 		<dict>
 			<key>config</key>
 			<dict>
+				<key>conditions</key>
+				<array>
+					<dict>
+						<key>inputstring</key>
+						<string>{var:state_select_editor}</string>
+						<key>matchcasesensitive</key>
+						<false/>
+						<key>matchmode</key>
+						<integer>0</integer>
+						<key>matchstring</key>
+						<string>true</string>
+						<key>outputlabel</key>
+						<string>yes: select an editor</string>
+						<key>uid</key>
+						<string>35A59653-DA62-4763-8252-797DEC8C88B0</string>
+					</dict>
+				</array>
+				<key>elselabel</key>
+				<string>no: use default editor</string>
+				<key>hideelse</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.utility.conditional</string>
+			<key>uid</key>
+			<string>C9E5A566-E864-4E6A-B4B8-D26E6CAE13CA</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>alignment</key>
+				<integer>0</integer>
+				<key>backgroundcolor</key>
+				<string></string>
+				<key>fadespeed</key>
+				<integer>0</integer>
+				<key>fillmode</key>
+				<integer>0</integer>
+				<key>font</key>
+				<string></string>
+				<key>ignoredynamicplaceholders</key>
+				<false/>
+				<key>largetypetext</key>
+				<string>{query}: {var:cmd_args_1} {var:cmd_args_2}</string>
+				<key>textcolor</key>
+				<string></string>
+				<key>wrapat</key>
+				<integer>50</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.output.largetype</string>
+			<key>uid</key>
+			<string>8F472693-5414-4E1C-B1D8-A15C651309AA</string>
+			<key>version</key>
+			<integer>3</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
 				<key>concurrently</key>
 				<false/>
 				<key>escaping</key>
@@ -208,21 +335,6 @@
 			<string>CDEA6050-5824-4DAE-A25C-B22E83D39E6D</string>
 			<key>version</key>
 			<integer>2</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>escaping</key>
-				<integer>127</integer>
-				<key>script</key>
-				<string>{var:cmd_args_1} {var:cmd_args_2}</string>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.action.terminalcommand</string>
-			<key>uid</key>
-			<string>87BDE424-9AE9-4D99-9AE8-5E4490ADE594</string>
-			<key>version</key>
-			<integer>1</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -249,6 +361,23 @@
 		<dict>
 			<key>config</key>
 			<dict>
+				<key>acceptsmulti</key>
+				<integer>0</integer>
+				<key>filetypes</key>
+				<array/>
+				<key>name</key>
+				<string>Open in Visual Studio Code</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.trigger.action</string>
+			<key>uid</key>
+			<string>0F3BE3C6-71FB-4B75-AE97-2CFADAAA883A</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
 				<key>conditions</key>
 				<array>
 					<dict>
@@ -261,7 +390,7 @@
 						<key>matchstring</key>
 						<string>vim</string>
 						<key>outputlabel</key>
-						<string>terminal</string>
+						<string>vim</string>
 						<key>uid</key>
 						<string>0EE043B9-73B4-4762-817D-90B229B8FD9F</string>
 					</dict>
@@ -275,13 +404,13 @@
 						<key>matchstring</key>
 						<string>nvim</string>
 						<key>outputlabel</key>
-						<string>terminal</string>
+						<string>nvim</string>
 						<key>uid</key>
 						<string>61349ABF-A75D-4234-B5DA-826531978DAC</string>
 					</dict>
 				</array>
 				<key>elselabel</key>
-				<string>app</string>
+				<string>others</string>
 				<key>hideelse</key>
 				<false/>
 			</dict>
@@ -318,17 +447,15 @@
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>acceptsmulti</key>
-				<integer>0</integer>
-				<key>filetypes</key>
-				<array/>
-				<key>name</key>
-				<string>Open in Visual Studio Code</string>
+				<key>escaping</key>
+				<integer>127</integer>
+				<key>script</key>
+				<string>{var:cmd_args_1} {var:cmd_args_2}</string>
 			</dict>
 			<key>type</key>
-			<string>alfred.workflow.trigger.action</string>
+			<string>alfred.workflow.action.terminalcommand</string>
 			<key>uid</key>
-			<string>0F3BE3C6-71FB-4B75-AE97-2CFADAAA883A</string>
+			<string>87BDE424-9AE9-4D99-9AE8-5E4490ADE594</string>
 			<key>version</key>
 			<integer>1</integer>
 		</dict>
@@ -360,63 +487,102 @@ WIP ...</string>
 	<dict>
 		<key>0F3BE3C6-71FB-4B75-AE97-2CFADAAA883A</key>
 		<dict>
+			<key>colorindex</key>
+			<integer>7</integer>
+			<key>note</key>
+			<string>Show a menu item in "Universal Action" for launching this workflow.</string>
 			<key>xpos</key>
 			<real>80</real>
 			<key>ypos</key>
-			<real>325</real>
+			<real>320</real>
 		</dict>
 		<key>13430A14-AADC-42EC-986C-9F8DD6A4B626</key>
 		<dict>
+			<key>colorindex</key>
+			<integer>7</integer>
 			<key>note</key>
-			<string>Open selected project in configured application</string>
+			<string>Open selected project in configured application.</string>
 			<key>xpos</key>
-			<real>540</real>
+			<real>855</real>
 			<key>ypos</key>
-			<real>325</real>
+			<real>350</real>
 		</dict>
 		<key>87BDE424-9AE9-4D99-9AE8-5E4490ADE594</key>
 		<dict>
+			<key>colorindex</key>
+			<integer>7</integer>
+			<key>note</key>
+			<string>Open selected project by running commands from last step in the terminal.</string>
 			<key>xpos</key>
-			<real>820</real>
+			<real>1135</real>
 			<key>ypos</key>
-			<real>185</real>
+			<real>355</real>
 		</dict>
 		<key>8DAF3DF3-7B04-4679-AD1D-156D2CC288C1</key>
 		<dict>
+			<key>colorindex</key>
+			<integer>7</integer>
+			<key>note</key>
+			<string>Register a keyword ("code" by default) for launching this workflow.</string>
 			<key>xpos</key>
-			<real>80</real>
+			<real>75</real>
 			<key>ypos</key>
-			<real>180</real>
+			<real>40</real>
 		</dict>
 		<key>8F472693-5414-4E1C-B1D8-A15C651309AA</key>
 		<dict>
 			<key>note</key>
-			<string>This block is used for DEBUGGING</string>
+			<string>DEBUG</string>
 			<key>xpos</key>
-			<real>820</real>
+			<real>1135</real>
 			<key>ypos</key>
-			<real>30</real>
+			<real>100</real>
 		</dict>
 		<key>BB656F36-3E69-4F0E-8D6A-95332FE9D3F7</key>
 		<dict>
+			<key>note</key>
+			<string>Determine which mode to run the editor in?</string>
 			<key>xpos</key>
-			<real>330</real>
+			<real>699</real>
 			<key>ypos</key>
-			<real>270</real>
+			<real>325</real>
+		</dict>
+		<key>C9E5A566-E864-4E6A-B4B8-D26E6CAE13CA</key>
+		<dict>
+			<key>note</key>
+			<string>Check if user is holding "⌘" to enter this step.</string>
+			<key>xpos</key>
+			<real>260</real>
+			<key>ypos</key>
+			<real>60</real>
 		</dict>
 		<key>CDEA6050-5824-4DAE-A25C-B22E83D39E6D</key>
 		<dict>
+			<key>note</key>
+			<string>Build the command and its args for opening selected project in the editor.</string>
 			<key>xpos</key>
-			<real>540</real>
+			<real>855</real>
 			<key>ypos</key>
-			<real>185</real>
+			<real>175</real>
+		</dict>
+		<key>E89FEAA1-C0CE-469B-BBB6-A2BF582F3E64</key>
+		<dict>
+			<key>note</key>
+			<string>Open a list for the user to select an editor.
+This step may change the variable "config_vscode_variety" for this purpose.</string>
+			<key>xpos</key>
+			<real>495</real>
+			<key>ypos</key>
+			<real>25</real>
 		</dict>
 		<key>F1FE73CE-D0C7-471D-B3F1-F3EC5F3B8AD3</key>
 		<dict>
+			<key>note</key>
+			<string>Split command and args from last step to variables to ensure no any escape sequence related issues</string>
 			<key>xpos</key>
-			<real>705</real>
+			<real>1030</real>
 			<key>ypos</key>
-			<real>215</real>
+			<real>205</real>
 		</dict>
 	</dict>
 	<key>userconfigurationconfig</key>
@@ -434,7 +600,7 @@ WIP ...</string>
 				<true/>
 			</dict>
 			<key>description</key>
-			<string></string>
+			<string>A keyword to start this workflow. You can use any keyword you like (e.g., `vim`).</string>
 			<key>label</key>
 			<string>Keyword</string>
 			<key>type</key>
@@ -476,9 +642,9 @@ WIP ...</string>
 				</array>
 			</dict>
 			<key>description</key>
-			<string>Choose a editor from predefined editor varieties to open the project</string>
+			<string>Choose a predefined common editor as the default editor to open the project.</string>
 			<key>label</key>
-			<string>Code Variety</string>
+			<string>Editor</string>
 			<key>type</key>
 			<string>popupbutton</string>
 			<key>variable</key>
@@ -490,14 +656,14 @@ WIP ...</string>
 				<key>default</key>
 				<string></string>
 				<key>placeholder</key>
-				<string>Do not touch this config in most cases</string>
+				<string>In most cases, you do not need to fill this field.</string>
 				<key>required</key>
 				<false/>
 				<key>trim</key>
 				<true/>
 			</dict>
 			<key>description</key>
-			<string>Compared to config "Code Variety", this config has the highest priority. This config accepts a command name or a path to the command</string>
+			<string>This field only needs to be set if your editor is not found in the above `Editor` list or your editor is installed in a non-standard location. This field accepts a command name or a path to the command.</string>
 			<key>label</key>
 			<string>Custom Editor Command</string>
 			<key>type</key>
@@ -516,9 +682,9 @@ WIP ...</string>
 				<string></string>
 			</dict>
 			<key>description</key>
-			<string>Scan projects from editor recent workspace history</string>
+			<string>Scan the workspaces of the editor in the `Editor` field to provide recently opened projects in result. Recently opened projects may include remote projects. (e.g., projects over SSH/WSL)</string>
 			<key>label</key>
-			<string>Scan Workspace History</string>
+			<string>Scan Workspaces</string>
 			<key>type</key>
 			<string>checkbox</string>
 			<key>variable</key>
@@ -532,14 +698,14 @@ WIP ...</string>
 				<key>filtermode</key>
 				<integer>1</integer>
 				<key>placeholder</key>
-				<string>Set it to the root directory of your projects</string>
+				<string>The workflow will find all projects under this directory</string>
 				<key>required</key>
 				<false/>
 			</dict>
 			<key>description</key>
-			<string>A directory for automatically scanning projects</string>
+			<string>Fill this field to enable project scanning from the specified root on the local file system.</string>
 			<key>label</key>
-			<string>Projects Directory</string>
+			<string>Projects Root</string>
 			<key>type</key>
 			<string>filepicker</string>
 			<key>variable</key>
@@ -558,9 +724,9 @@ WIP ...</string>
 				<integer>3</integer>
 			</dict>
 			<key>description</key>
-			<string>More directories for automatically scanning projects (One directory path each line)</string>
+			<string>Additional directory paths used for scanning projects on the local file system. (One directory path per line)</string>
 			<key>label</key>
-			<string>Projects Directory (More)</string>
+			<string>Additional Roots</string>
 			<key>type</key>
 			<string>textarea</string>
 			<key>variable</key>
@@ -579,7 +745,7 @@ WIP ...</string>
 				<integer>6</integer>
 			</dict>
 			<key>description</key>
-			<string>One project path each line</string>
+			<string>These paths will be treated directly as projects instead of a root for scanning. (One project path per line)</string>
 			<key>label</key>
 			<string>Extra Projects</string>
 			<key>type</key>
@@ -604,9 +770,9 @@ WIP ...</string>
 				<true/>
 			</dict>
 			<key>description</key>
-			<string>The max depth for scanning projects from projects root directory. This config only takes effect when the config "Projects Directory" is configured</string>
+			<string>The max depth for scanning projects from projects root directory. This field only takes effect when the field `Projects Root` is configured</string>
 			<key>label</key>
-			<string>Scan Depth for Projects</string>
+			<string>Max Depth for Scanning</string>
 			<key>type</key>
 			<string>slider</string>
 			<key>variable</key>
@@ -623,9 +789,9 @@ WIP ...</string>
 				<string></string>
 			</dict>
 			<key>description</key>
-			<string>Continue to scan its child folders even if current folder is a project root folder</string>
+			<string>Even if a directory is found as a project directory during the scan, continue scanning its children to find nested sub-projects.</string>
 			<key>label</key>
-			<string>Scan Sub Projects</string>
+			<string>Scan Nested Projects</string>
 			<key>type</key>
 			<string>checkbox</string>
 			<key>variable</key>
@@ -642,7 +808,7 @@ WIP ...</string>
 				<string></string>
 			</dict>
 			<key>description</key>
-			<string></string>
+			<string>Enable caches for project scanningto reduce the number of file system scans.</string>
 			<key>label</key>
 			<string>Enable Scan Cache</string>
 			<key>type</key>
@@ -654,7 +820,7 @@ WIP ...</string>
 			<key>config</key>
 			<dict>
 				<key>default</key>
-				<string>/usr/local/bin:/opt/homebrew/bin:~/.cargo/bin:~/go/bin</string>
+				<string>/usr/local/bin:/opt/homebrew/bin:~/.cargo/bin:~/go/bin:~/.yarn/bin</string>
 				<key>required</key>
 				<false/>
 				<key>trim</key>
@@ -663,7 +829,7 @@ WIP ...</string>
 				<integer>6</integer>
 			</dict>
 			<key>description</key>
-			<string>Prepend some PATH for the editor</string>
+			<string>Prepend these specified paths to the `PATH` environment variable for the editor.</string>
 			<key>label</key>
 			<string>Prepend PATH</string>
 			<key>type</key>
@@ -675,7 +841,7 @@ WIP ...</string>
 			<key>config</key>
 			<dict>
 				<key>default</key>
-				<string>{ "/": "/", "~/": "~/" }</string>
+				<string>{ "/": "/", "~/": "~/", "docs/": "~/Documents" }</string>
 				<key>required</key>
 				<false/>
 				<key>trim</key>
@@ -684,9 +850,9 @@ WIP ...</string>
 				<integer>3</integer>
 			</dict>
 			<key>description</key>
-			<string>Some path prefixes used for locating projects by path and shortening displayed path</string>
+			<string>Some path prefixes used for quickly navigating projects, which are also used to shorten the displayed project paths. (Please fill this field with JSON key-value pairs)</string>
 			<key>label</key>
-			<string>Custom Path Prefix</string>
+			<string>Custom Path Prefixes</string>
 			<key>type</key>
 			<string>textarea</string>
 			<key>variable</key>
