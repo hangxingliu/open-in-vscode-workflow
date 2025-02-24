@@ -46,6 +46,7 @@ export class AlfredResult {
         text: { copy: item.fsPath, largetype: item.baseName },
         quicklookurl: item.fsPath,
         icon: this.defaultIcon,
+        mods: AlfredResult.initMods(item.shortName, [item.fsPath]),
       },
       score
     );
@@ -63,6 +64,7 @@ export class AlfredResult {
           text: { copy: fullPath, largetype: baseName },
           autocomplete: baseName,
           icon: this.defaultIcon,
+          mods: AlfredResult.initMods(shortName, [fullPath]),
         },
         score
       );
@@ -114,6 +116,7 @@ export class AlfredResult {
         text: { copy: fullPath, largetype: basename },
         icon: this.defaultIcon || { type: 'fileicon', path: fullPath },
         quicklookurl: fullPath,
+        mods: AlfredResult.initMods(basename, [fullPath]),
       },
       101
     );
@@ -140,6 +143,20 @@ export class AlfredResult {
       if (len > this.maxItems) break;
     }
     return items;
+  }
+
+  static initMods(shortName: string, arg: string[]) {
+    const result: AlfredFilter.Item['mods'] = {
+      cmd: {
+        subtitle: `⌘ (cmd): select an editor to open it ...`,
+        arg: shortName + ' ', // add a space for filtering editor
+        variables: {
+          state_select_editor: 'true',
+          state_args_json: JSON.stringify(arg),
+        },
+      },
+    };
+    return result;
   }
 
   static getResult(items: AlfredResult | AlfredFilter.Item[], print: boolean) {

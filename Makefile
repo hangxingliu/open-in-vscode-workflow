@@ -15,5 +15,8 @@ $(DIST_DIR)/%.js: $(SRC_DIR)/%.ts
 install: build
 	SKIP_BUILD=1 ./scripts/install-workflow.sh
 
+syncback:
+	./scripts/sync-back.sh
+
 clean:
 	rm -rf $(DIST_DIR)
