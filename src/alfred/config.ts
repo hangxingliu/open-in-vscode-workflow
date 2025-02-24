@@ -66,12 +66,12 @@ export class AlfredConfig {
     };
 
     //
-    let variety = defaultVariety;
+    let variety: Readonly<VSCodeVariety> = defaultVariety;
     if (rawConfig.vscodeVariety) {
       const varietyName = rawConfig.vscodeVariety;
       const _variety = allVarieties.find((it) => it.id === varietyName);
       if (_variety) variety = _variety;
-      else console.error(`warn: unknown variety: "${varietyName}"`);
+      else console.error(`WARN: unknown variety: "${varietyName}"`);
     }
     this.vscodeVariety = variety;
 

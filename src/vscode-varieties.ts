@@ -3,22 +3,28 @@
  * Including the command, application name and icon
  */
 export type VSCodeVariety = {
+  /** An identifier used to pass between each step in this Alfred workflow */
   id: string;
-  /** The command of this variety for launching */
+  /** The command for launching this program */
   bin: string;
+  /** An macOS application name (eg, `${Application}.app`) or a human-readable name as its title */
   app: string;
-  icon?: string;
+  /** The path to the icon of this program */
+  icon: string;
   /** `~/Library/Application Support/${configDir}` */
-  configDir: string;
+  configDir?: string;
 };
 
-export const allVarieties: ReadonlyArray<VSCodeVariety> = [
-  {
-    id: 'code',
-    bin: 'code',
-    app: 'Visual Studio Code.app',
-    configDir: 'Code',
-  },
+export const defaultVariety = {
+  id: 'code',
+  bin: 'code',
+  app: 'Visual Studio Code.app',
+  configDir: 'Code',
+  icon: 'icons/code.png',
+} satisfies Required<VSCodeVariety>;
+
+export const allVarieties: ReadonlyArray<Readonly<VSCodeVariety>> = [
+  defaultVariety,
   {
     id: 'code-insiders',
     bin: 'code-insiders',
@@ -38,21 +44,18 @@ export const allVarieties: ReadonlyArray<VSCodeVariety> = [
     bin: 'cursor',
     app: 'Cursor.app',
     configDir: 'Cursor',
-    icon: '/Applications/Cursor.app/Contents/Resources/Cursor.icns'
+    icon: '/Applications/Cursor.app/Contents/Resources/Cursor.icns',
   },
   {
     id: 'vim',
     bin: 'vim',
-    app: '',
-    configDir: '',
+    app: 'Vim',
     icon: 'icons/vim.png',
   },
   {
     id: 'nvim',
     bin: 'nvim',
-    app: '',
-    configDir: '',
+    app: 'Neovim',
     icon: 'icons/neovim.png',
-  }
+  },
 ];
-export const defaultVariety = allVarieties[0];

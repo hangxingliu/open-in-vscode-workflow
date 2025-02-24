@@ -17,6 +17,7 @@ import { VSCodeWorkspaceScanner } from './scanner/vscode-workspace/index.js';
 import { ParsedWorkspaceFolderUri, WorkspaceRemoteType } from './scanner/vscode-workspace/types.js';
 import { workspaceRemoteTypeMap } from './scanner/vscode-workspace/utils.js';
 import { URLSet } from './utils.js';
+import { defaultVariety } from './vscode-varieties.js';
 
 if (require.main === module) main();
 export async function main(devTest?: { input: string }) {
@@ -58,7 +59,8 @@ export async function main(devTest?: { input: string }) {
 
   // scan vscode workspace history
   if (config.scanWorkspaceHistory) {
-    const scanner = new VSCodeWorkspaceScanner(urlSet, config.vscodeVariety.configDir);
+    const configDir = config.vscodeVariety.configDir || defaultVariety.configDir;
+    const scanner = new VSCodeWorkspaceScanner(urlSet, configDir);
     const cache = new CacheManager(scanWorkspaceCache, config.cacheEnabled);
     allWorkspaces = await scanner.scan(cache);
     matchRemote = matchRemoteQuery(input, scanner.remoteNamesMap);

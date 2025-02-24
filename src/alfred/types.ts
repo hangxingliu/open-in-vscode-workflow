@@ -1,8 +1,42 @@
 /**
  * @see https://www.alfredapp.com/help/workflows/inputs/script-filter/json/
- * @version 2025-01-03 (Alfred 5.5)
+ * @version 2025-02-24 (Alfred 5.5)
  */
 export namespace AlfredFilter {
+  //
+  //#region modifier keys
+  //
+  /**
+   * Valid modifiers include cmd (⌘), alt (⌥), ctrl (⌃), shift (⇧), fn,
+   * and any combination through the use of +.
+   * For example: cmd + alt only activates when both keys are pressed.
+   */
+  type ModKeys = { cmd: 'cmd'; alt: 'alt'; shift: 'shift'; fn: 'fn' };
+  type ModKeyNames = keyof ModKeys;
+  type CombineModKey<
+    Prefix extends string,
+    NewModKey extends ModKeyNames
+  > = Prefix extends `${string}${NewModKey}${string}`
+    ? never
+    : Prefix extends `${string}+${string}`
+    ? `${Prefix}+${NewModKey}`
+    : Prefix extends ModKeyNames
+    ? `${Prefix}+${NewModKey}`
+    : NewModKey;
+  type CombineAllModKeys<Prefix extends string> =
+    | CombineModKey<Prefix, 'cmd'>
+    | CombineModKey<Prefix, 'alt'>
+    | CombineModKey<Prefix, 'shift'>
+    | CombineModKey<Prefix, 'fn'>;
+  type OneModKeys = CombineAllModKeys<''>;
+  type TwoModKeys = CombineAllModKeys<OneModKeys>;
+  type ThreeModKeys = CombineAllModKeys<TwoModKeys>;
+  type FourModKeys = CombineAllModKeys<ThreeModKeys>;
+  export type AllModKeys = OneModKeys | TwoModKeys | ThreeModKeys | FourModKeys;
+  //
+  //#endregion modifier keys
+  //
+
   export type Result = {
     /**
      * **Variables / Session Variables**:
@@ -120,11 +154,7 @@ export namespace AlfredFilter {
      * It can alter the looks of a result (e.g. `subtitle`, `icon`) and output a different `arg`
      * or session variables.
      */
-    mods?: {
-      alt?: Partial<Item>;
-      cmd?: Partial<Item>;
-      'cmd+alt'?: Partial<Item>;
-    };
+    mods?: { [mod in AllModKeys]?: Partial<Item> };
 
     /**
      * Defines the text the user will get when copying the selected result row with `⌘C`
