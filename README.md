@@ -1,3 +1,6 @@
+---
+updated_at: 2025-02-26 14:39:55
+---
 # Open in Visual Studio Code Workflow for [Alfred 5](https://www.alfredapp.com/)
 
 > [!NOTE]
@@ -5,25 +8,24 @@
 
 This workflow provides a feature for you to search and open a specific project in Visual Studio Code (or related variants or Vim) from your Alfred.
 
-And it also adds a File Action `Open in Visual Studio Code` in your Alfred.
+And it also adds a Universal Action named `Open in Visual Studio Code` in your Alfred.
 
-![Screenshot of usage 1](./workflow/screenshot1.png)
-![Screenshot of usage 2](./workflow/screenshot2.png)
+| Find your projects | Choose a different editor |
+|:------------------:|:-------------------------:|
+|![Screenshot of usage 1](./workflow/screenshots/screenshot1.png)|![Screenshot of usage 2](./workflow/screenshots/screenshot2.png) ![Screenshot of usage 3](./workflow/screenshots/screenshot3.png) |
 
-
-
-
-
-
-### TODO
-
-- [ ] Update docs
+| Universal Action   | Configuration Panel |
+|:------------------:|:-------------------------:|
+|![Screenshot of usage 4](./workflow/screenshots/screenshot4.png)|![Configuration 1](./workflow/screenshots/config1.jpg)|
 
 ## Installation
 
-You can download this workflow from [Releases](https://github.com/hangxingliu/open-in-vscode-workflow/releases) page
+You can download this workflow from [Releases](https://github.com/hangxingliu/open-in-vscode-workflow/releases) page and directly import it into Alfred.
 
-**INFO:** This workflow contains Node.js scripts. If you have not installed Node.js runtime, you should download the workflow file that contains Node.js binary file. (The larger one in the Releases page) Or you can download and install [Node.js](https://nodejs.org/en/download/) before using this workflow.
+> [!IMPORTANT]
+> This workflow contains Node.js scripts. 
+> If you have not installed Node.js runtime, you should download the workflow file that contains Node.js binary file. 
+> Or you can download and install [Node.js](https://nodejs.org/en/download/) before using this workflow.
 
 
 ### Install from Source Code
@@ -40,6 +42,11 @@ yarn install
 make install
 # or directly call the script: ./scripts/install-workflow.sh
 ```
+
+## Contributing
+
+[CONTRIBUTING.md](./docs/CONTRIBUTING.md)
+
 
 ## License
 
