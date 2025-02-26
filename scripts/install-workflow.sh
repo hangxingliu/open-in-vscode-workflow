@@ -16,6 +16,7 @@ command -v rsync >/dev/null || throw "rsync is not installed!";
 # change the current directory to the project directory
 pushd -- "$( dirname -- "${BASH_SOURCE[0]}" )/.." >/dev/null || exit 1;
 [ -n "$SKIP_BUILD" ] || execute_node_bin tsc;
+execute node scripts/update-workflow-plist.mjs;
 
 RSYNC_OPTS=(
   -a --xattrs --progress  --delete --iconv=utf-8

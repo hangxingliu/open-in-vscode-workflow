@@ -3,13 +3,15 @@
 SRC_DIR = src
 DIST_DIR = workflow/js
 
-SRC_FILES = $(shell find $(SRC_DIR) -type f -name '*.ts')
-DIST_FILES = $(patsubst $(SRC_DIR)/%.ts, $(DIST_DIR)/%.js, $(SRC_FILES))
+SRC_FILES   = $(shell find $(SRC_DIR) -type f -name '*.ts')
+# _DIST_FILES = $(patsubst %.ts, %.js, $(SRC_FILES))
+# DIST_FILES  = $(subst $(SRC_DIR), $(DIST_DIR), $(_DIST_FILES))
+# $(info DEBUG= $(DIST_FILES))
 
 all: build
 
-build: $(DIST_FILES)
-$(DIST_DIR)/%.js: $(SRC_DIR)/%.ts
+build: $(DIST_DIR)/tsconfig.tsbuildinfo
+$(DIST_DIR)/tsconfig.tsbuildinfo: $(SRC_FILES)
 	yarn run build
 
 install: build

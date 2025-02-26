@@ -36,15 +36,15 @@ if has_param "--all" "${@}"; then
 
   echo "[.] packing workflow $version with arm64 Node.js runtime ...";
   cp -v ../libs/node_arm64 ../libs/LICENSE ./libs/ || exit 1;
-  target_file="../dist/OpenInVSCode.arm64.alfredworkflow";
+  target_file="../dist/OpenInVSCode-arm64.alfredworkflow";
   test -f "$target_file" && rm "$target_file";
   zip -r "$target_file" . || exit 1;
 
-  echo "[.] packing workflow $version with arm64 Node.js runtime ...";
+  echo "[.] packing workflow $version with x64 Node.js runtime ...";
   rm -r libs || exit 1;
   mkdir libs || exit 1;
   cp -v ../libs/node_x64 ../libs/LICENSE ./libs/ || exit 1;
-  target_file="../dist/OpenInVSCode.amd64.alfredworkflow";
+  target_file="../dist/OpenInVSCode-64.alfredworkflow";
   test -f "$target_file" && rm "$target_file";
   zip -r "$target_file" . || exit 1;
 
