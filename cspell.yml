@@ -1,0 +1,36 @@
+# https://cspell.org/
+language: en
+dictionaries:
+  - softwareTerms
+  - bash
+  - typescript
+  - node
+allowCompoundWords: true
+ignorePaths:
+  - cache
+  - dist
+  - libs
+  - workflow/js
+  - workflow/info.plist
+  - "*.svg"
+ignoreRegExpList:
+  - /\w+:/       # property keys
+  - /"\w+"/      # a word in a string
+  - /<\/?\w+>/   # HTML tags
+  - /[A-Z]{4,}/  # all uppercase
+  - /\/.+\//     # in RegExp
+  - /`[\w\-=]+`/ # code in markdown
+  - /@\w+(?:\s*\(.+?\))/     # usernames
+  - /\\n/        # escaped character for new line
+  - /decodeURIComponent/
+words:
+  - hangxingliu
+  - iname
+  - nvim
+  - icns
+  - xattrs
+  - magick
+  - prefs
+  - pyproject
+  - behaviour
+  - archi

@@ -2,6 +2,7 @@
  * @see https://github.com/github/gitignore/blob/main/Global/macOS.gitignore
  */
 export const IGNORED_MACOS_FILES = new Set<string>([
+  // cspell:disable
   '.DS_Store',
   '.AppleDouble',
   '.LSOverride',
