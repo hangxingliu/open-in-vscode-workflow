@@ -11,5 +11,6 @@ execute source "./include/resolve_nodejs.bash";
 nodejs_cmd=( "$node" );
 # shellcheck disable=SC2154
 [ "$alfred_debug" == 1 ] && nodejs_cmd+=( --enable-source-maps );
+# nodejs_cmd+=( js/index-debug.js "${@}" );
 nodejs_cmd+=( js/index.js "${@}" );
 "${nodejs_cmd[@]}";

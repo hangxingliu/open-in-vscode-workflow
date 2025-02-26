@@ -72,9 +72,14 @@ export class AlfredResult {
     }
 
     let title: string | undefined = item.remoteType;
+    let subtitle = item.url.pathname;
     if (!title) title = 'Remote';
     title = `(${title}) `;
-    if (item.remoteName) title += `${item.remoteName} > `;
+
+    if (item.remoteName) {
+      if (item.remoteType === 'Codespaces') subtitle = item.remoteName + ' > ' + item.baseName;
+      else title += `${item.remoteName} > `;
+    }
 
     const basename = path.basename(item.url.pathname);
     title += basename;
@@ -89,7 +94,7 @@ export class AlfredResult {
     this.addItem(
       {
         title,
-        subtitle: item.url.pathname,
+        subtitle,
         arg,
         autocomplete: basename,
         text: { copy: item.url.pathname, largetype: basename },

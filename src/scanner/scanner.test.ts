@@ -17,8 +17,7 @@ async function main() {
   const items = await scanner.scan();
   items.forEach((item) => {
     if (item.url.protocol === 'file:') return;
-    console.log(item.remoteName, item.shortName);
-    console.log(item.url.toString());
+    console.log({ ...item, url: item.url.toString() });
   });
 }
 
