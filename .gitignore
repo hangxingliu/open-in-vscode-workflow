@@ -5,6 +5,8 @@
 cache
 
 workflow/js/*
+workflow/prefs.plist
+
 libs
 dist
 

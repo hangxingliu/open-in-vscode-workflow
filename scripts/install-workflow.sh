@@ -20,7 +20,7 @@ execute node scripts/update-workflow-plist.mjs;
 
 RSYNC_OPTS=(
   -a --xattrs --progress  --delete --iconv=utf-8
-	--exclude='._*' --exclude='.DS_Store' --exclude='prefs.plist'
+	--exclude='._*' --exclude='.DS_Store'
   --exclude='*.tsbuildinfo'
 );
 

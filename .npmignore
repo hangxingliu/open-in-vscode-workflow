@@ -1,10 +1,15 @@
 .github
 .vscode
+.yarn
+*.env
 dist
+cache
 libs
 node_modules
 res
 scripts
 src
+workflow/js/*.tsbuildinfo
+workflow/prefs.plist
 tsconfig.json
 yarn.lock
