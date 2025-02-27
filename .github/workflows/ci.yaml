@@ -32,16 +32,11 @@ jobs:
     name: Continuous integration (Node.js "lts/*")
     steps:
       - uses: actions/checkout@v4
-      - name: Enable Corepack
-        run: corepack enable
       - uses: actions/setup-node@v4
         with:
           node-version: "lts/*"
-      - name: 'Print latest 5 git logs'
-        run: git log --branches --all --decorate --oneline -n 5
-      - run: yarn install
-      - run: yarn run build
-      - run: ./scripts/distribute-workflow-files.sh
+      - name: 'Build'
+        run: ./scripts/github-workflow-build.sh
       - uses: actions/upload-artifact@v4
         with:
           name: workflow-files
