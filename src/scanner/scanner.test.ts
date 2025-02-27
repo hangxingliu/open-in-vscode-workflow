@@ -24,6 +24,7 @@ async function main() {
 async function main2() {
   delete process.env.config_more_projects_dir;
   const config = AlfredConfig.get();
+  config.scanDirectory!.nestedProjects = false;
   const scanner = new ProjectDirectoryScanner(new URLSet(), config.scanDirectory!);
   await scanner.scan();
 
@@ -41,7 +42,7 @@ async function main2() {
       });
     });
   }
-  console.log(result);
+  console.log(JSON.stringify(result, null, 2));
 }
 
 async function main3() {

@@ -61,23 +61,26 @@ export class ProjectDirectoryScanner {
   }
 
   private async _scan(baseDir: string, fullPath: string, state: ScannerState) {
-    const { maxDepth } = this.opts;
+    const { maxDepth, nestedProjects } = this.opts;
     if (state.depth >= maxDepth) return;
     if (this.scanned.has(fullPath)) return;
     this.scanned.add(fullPath);
 
     const { isProject, nextScan } = await scanSingleDirectory(fullPath, this.opts);
-    if (isProject && !this.urlSet.hasFsPath(fullPath)) {
-      const baseName = basename(fullPath);
-      let shortName = baseName;
-      if (state.parentIsProject) shortName = basename(dirname(fullPath)) + '/' + baseName;
-      this.result.push({
-        fsPath: fullPath,
-        baseName,
-        shortName,
-        aliasPath: basename(baseDir) + '/' + relative(baseDir, fullPath),
-      });
-      this.urlSet.addFsPath(fullPath);
+    if (isProject) {
+      if (!this.urlSet.hasFsPath(fullPath)) {
+        const baseName = basename(fullPath);
+        let shortName = baseName;
+        if (state.parentIsProject) shortName = basename(dirname(fullPath)) + '/' + baseName;
+        this.result.push({
+          fsPath: fullPath,
+          baseName,
+          shortName,
+          aliasPath: basename(baseDir) + '/' + relative(baseDir, fullPath),
+        });
+        this.urlSet.addFsPath(fullPath);
+      }
+      if (!nestedProjects) return;
     }
 
     for (let i = 0; i < nextScan.length; i++) {

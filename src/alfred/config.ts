@@ -7,6 +7,8 @@ export type CustomPrefixMap = Record<PrefixString, PrefixString>;
 export type ScanDirectoryConfig = {
   /** Enable scan cache to speed up subsequent scan */
   cacheEnabled: boolean;
+  /** Enable scanning nested projects */
+  nestedProjects: boolean;
   baseDirs: ReadonlyArray<string>;
   extraDirs: ReadonlyArray<string>;
   maxDepth: number;
@@ -57,6 +59,7 @@ export class AlfredConfig {
       projectsDir: process.env.config_projects_dir,
       moreProjectsDir: process.env.config_more_projects_dir,
       scanDepth: process.env.config_scan_depth,
+      nestedProjects: process.env.config_scan_sub_projects,
       cacheEnabled: process.env.config_cache_enabled,
       // prependPath: process.env.prepend_path,
 
@@ -114,8 +117,10 @@ export class AlfredConfig {
 
       const baseDirs = Array.from(new Set(projectsDirs.filter(Boolean).map(resolvePath)));
       const maxDepth = AlfredConfig.getPositiveInt(rawConfig.scanDepth, defaults.SCAN_DEPTH);
+      const nestedProjects = !AlfredConfig.isFalse(rawConfig.nestedProjects);
       this.scanDirectory = {
         cacheEnabled: this.cacheEnabled,
+        nestedProjects,
         baseDirs,
         extraDirs,
         maxDepth,
