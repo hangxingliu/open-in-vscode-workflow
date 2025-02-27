@@ -1,13 +1,17 @@
 export const SCAN_DEPTH = 3;
 export const SCAN_PRUNING_NAME: ReadonlyArray<string | RegExp> = [
+  // hidden files, __pycache__, ...
   /^[._]/,
+  // Node.js dependencies
   'node_modules',
+  // other well known directories
   'cache',
-  'dist',
   'logs',
+  'contrib',
+  'dist',
 ];
 
-export const SCAN_PROJECT_FILES: ReadonlyArray<string> = [
+export const SCAN_PROJECT_FILES: ReadonlyArray<string | RegExp> = [
   // version control system directories
   '.git',
   '.svn',
@@ -17,7 +21,7 @@ export const SCAN_PROJECT_FILES: ReadonlyArray<string> = [
   '.idea',
   // Common project files
   'Makefile',
-  'README.md',
+  // 'README.md',
   // Node.js
   'package.json',
   // Java
@@ -36,7 +40,7 @@ export const SCAN_PROJECT_FILES: ReadonlyArray<string> = [
   // PHP
   'composer.json',
   // C#/Visual Studio
-  // '*.sln'
+  /\.sln$/,
 ];
 
 export const CUSTOM_PREFIXES = {
